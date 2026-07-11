@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Esteban Santa</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <section class="contact-titre container">
+        <span class="tag">Discutons</span>
+        <h1>Travaillons ensemble<br><span class="accent">dès maintenant</span></h1>
+    </section>
+
+    <section class="container contact-grille">
+        <div class="contact-col-gauche">
+            <div class="contact-carte contact-carte--info">
+                <div class="contact-carte__inner">
+                    <a class="valeur" data-social="email" data-social-text="email"></a>
+                    <p class="label">Adresse mail</p>
+                </div>
+            </div>
+
+            <div class="contact-carte contact-carte--info">
+                <div class="contact-carte__inner">
+                    <a class="valeur" data-social="phone" data-social-text="phone"></a>
+                    <p class="label">Téléphone</p>
+                </div>
+            </div>
+
+            <div class="reseaux-ligne">
+                <a class="contact-carte contact-carte--reseau" data-social="insta" target="_blank" rel="noopener" aria-label="Instagram">
+                    <div class="contact-carte__inner">
+                        <span class="icon-social"><svg><use href="assets/img/icons.svg#icon-instagram"></use></svg></span>
+                    </div>
+                </a>
+                <a class="contact-carte contact-carte--reseau" data-social="linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <div class="contact-carte__inner">
+                        <span class="icon-social"><svg><use href="assets/img/icons.svg#icon-linkedin"></use></svg></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-carte form-contact">
+            <div class="contact-carte__inner">
+                <div id="form-message-slot"></div>
+
+                <form id="contact-form" method="post" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Mail</label>
+                            <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Votre message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="logo">
+                    <img src="assets/img/logo.png" alt="ES Prod">
+                </div>
+                <div class="reseaux">
+                    <a class="icon-social icon-social--clair" data-social="x" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                        <svg><use href="assets/img/icons.svg#icon-x"></use></svg>
+                    </a>
+                    <span class="reseaux-separateur"></span>
+                    <a class="icon-social icon-social--clair" data-social="insta" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg><use href="assets/img/icons.svg#icon-instagram"></use></svg>
+                    </a>
+                    <span class="reseaux-separateur"></span>
+                    <a class="icon-social icon-social--clair" data-social="linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <svg><use href="assets/img/icons.svg#icon-linkedin"></use></svg>
+                    </a>
+                </div>
+            </div>
+            <nav>
+                <a href="projets.html">Projets</a>
+                <a href="index.html#profil">Profil</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <p class="copy">&copy; <span id="copy-year"></span> ES</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/site.js"></script>
+</body>
+</html>
