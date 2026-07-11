@@ -40,13 +40,13 @@ const PROJECTS = [
         ],
         softwares: ['Pr', 'Ae', 'Ps'],
         videos: [
-            { url: '', type: 'Short content', orientation: 'portrait' },
-            { url: '', type: 'Short content', orientation: 'portrait' },
-            { url: '', type: 'Vidéo YT', orientation: 'landscape' },
-            { url: '', type: 'Interview', orientation: 'landscape' },
-            { url: '', type: 'Motion design', orientation: 'portrait' },
-            { url: '', type: 'After movie', orientation: 'landscape' },
-            { url: '', type: 'Publicité', orientation: 'landscape' },
+            { url: 'https://www.youtube.com/watch?v=9KRMuGkOzmc&pp=0gcJCU8LAYcqIYzv', type: 'Vidéo YT', orientation: 'landscape' },
+            { url: 'https://www.youtube.com/watch?v=zZWcePrhv08&t', type: 'Vidéo YT', orientation: 'landscape' },
+            { url: 'https://www.youtube.com/watch?v=e9JFyUHmd2I&t=98s&pp=ygUSemFib3V0aW5lIHRlYW0gYmRz', type: 'Interview', orientation: 'landscape' },
+            { url: 'https://x.com/swissesports/status/1981027769015488544/video/1', type: 'Motion design', orientation: 'landscape' },
+            { url: 'https://www.instagram.com/reel/DZXiZKQI_oW/', type: 'After movie', orientation: 'portrait' },
+            { url: '', type: 'Publicité', orientation: 'portrait' },
+            { url: 'https://vimeo.com/share/3dbc7295-25db-4467-8c0c-8c7b37cb4321/', type: 'Short content', orientation: 'portrait' },
         ],
     },
 
@@ -144,5 +144,5 @@ const SITE = {
     socialLinkedin: 'https://www.linkedin.com/in/esteban-santa/',
     // Crée un formulaire gratuit sur https://formspree.io (~1 min, sans CB),
     // puis remplace l'ID ci-dessous par celui fourni par Formspree.
-    formspreeId: 'YOUR_FORM_ID',
+    formspreeId: 'https://formspree.io/f/xykrgyob',
 };
