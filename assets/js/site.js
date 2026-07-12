@@ -18,6 +18,46 @@ function el(tag, options = {}, children = []) {
     return node;
 }
 
+/**
+ * Sprite d'icônes injecté directement dans la page (plutôt que chargé depuis
+ * un fichier .svg externe) : un <use> vers un fichier externe ne récupère pas
+ * la couleur "currentColor" de son contexte dans tous les navigateurs, ce qui
+ * faisait apparaître les icônes en noir. Injecté ici une seule fois, dans le
+ * même document, la couleur (blanche/noire selon la classe) s'applique bien.
+ */
+const ICON_SPRITE = `<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-x" viewBox="0 0 24 24">
+    <path d="M4.5 3.75H9L19.5 20.25H15L4.5 3.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M10.676 13.456L4.5 20.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19.5 3.75L13.324 10.544" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24">
+    <path d="M7.5 21C5.015 21 3 18.985 3 16.5V7.5C3 5.015 5.015 3 7.5 3H16.5C18.985 3 21 5.015 21 7.5V16.5C21 18.985 18.985 21 16.5 21H7.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M8.25 12C8.25 9.929 9.929 8.25 12 8.25C14.071 8.25 15.75 9.929 15.75 12C15.75 14.071 14.071 15.75 12 15.75C9.929 15.75 8.25 14.071 8.25 12Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" fill="none"/>
+    <path d="M15.75 7.125C15.75 6.504 16.254 6 16.875 6C17.496 6 18 6.504 18 7.125C18 7.746 17.496 8.25 16.875 8.25C16.254 8.25 15.75 7.746 15.75 7.125Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-linkedin" viewBox="0 0 24 24">
+    <path d="M3.75 21C3.336 21 3 20.664 3 20.25V3.75C3 3.336 3.336 3 3.75 3H20.25C20.664 3 21 3.336 21 3.75V20.25C21 20.664 20.664 21 20.25 21H3.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M11.25 10.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.25 10.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.25 13.125C11.25 11.675 12.425 10.5 13.875 10.5C15.325 10.5 16.5 11.675 16.5 13.125V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7.125 7.875C7.125 7.254 7.629 6.75 8.25 6.75C8.871 6.75 9.375 7.254 9.375 7.875C9.375 8.496 8.871 9 8.25 9C7.629 9 7.125 8.496 7.125 7.875Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24">
+    <path d="M12 3.75V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7.5 11.25L12 15.75L16.5 11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4.5 16.5V18.75C4.5 19.578 5.172 20.25 6 20.25H18C18.828 20.25 19.5 19.578 19.5 18.75V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>`;
+
+function initIconSprite() {
+    if (document.getElementById('icon-sprite')) return;
+    const conteneur = document.createElement('div');
+    conteneur.id = 'icon-sprite';
+    conteneur.innerHTML = ICON_SPRITE;
+    document.body.insertBefore(conteneur, document.body.firstChild);
+}
+
 /* ---------- Réseaux sociaux / coordonnées (communs à toutes les pages) ---------- */
 function initSocialLinks() {
     const liens = {
@@ -49,11 +89,13 @@ function renderProjectCard(projet) {
 
     const inner = el('div', { class: 'card-projet__inner' }, [
         el('img', { class: classeImage, attrs: { src: projet.image, alt: projet.titre, loading: 'lazy' } }),
+    ]);
+
+    return el('a', { class: 'card-projet', attrs: { href: `projet.html?slug=${encodeURIComponent(projet.slug)}` } }, [
+        inner,
         el('span', { class: 'card-projet__titre', text: projet.titre.toUpperCase() }),
         el('span', { class: 'card-projet__contenu', text: categories }),
     ]);
-
-    return el('a', { class: 'card-projet', attrs: { href: `projet.html?slug=${encodeURIComponent(projet.slug)}` } }, [inner]);
 }
 
 function renderHome() {
@@ -66,12 +108,17 @@ function renderHome() {
     if (timeline) {
         EXPERIENCES.forEach((exp) => {
             timeline.appendChild(el('div', { class: 'timeline-item' }, [
-                el('span', { text: exp.role }),
-                el('span', { text: exp.lieu }),
-                el('span', { class: 'dates', text: `${exp.debut} — ${exp.fin}` }),
+                colonneLignes(exp.role),
+                colonneLignes(exp.lieu),
+                colonneLignes([exp.debut, exp.fin], 'dates'),
             ]));
         });
     }
+}
+
+/** Colonne d'une ligne du parcours : une ou plusieurs lignes de texte empilées. */
+function colonneLignes(lignes, classe) {
+    return el('div', { class: classe || '' }, lignes.map((ligne) => el('span', { text: ligne })));
 }
 
 function renderListing() {
@@ -83,9 +130,20 @@ function renderListing() {
 /* ---------- Page détail projet ---------- */
 function getVideoTypes(projet) {
     const types = [];
-    projet.videos.forEach((video) => {
-        if (!types.includes(video.type)) types.push(video.type);
+    (projet.documents || []).forEach((doc) => {
+        doc.types.forEach((type) => {
+            if (!types.includes(type)) types.push(type);
+        });
     });
+    projet.videos.forEach((video) => {
+        video.types.forEach((type) => {
+            if (!types.includes(type)) types.push(type);
+        });
+    });
+    if (projet.driveFolder) {
+        const type = projet.driveType || 'Photographie';
+        if (!types.includes(type)) types.push(type);
+    }
     return types;
 }
 
@@ -104,7 +162,7 @@ function videoEmbedNode(url) {
         } });
     }
 
-    match = propre.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+    match = propre.match(/vimeo\.com\/(?:.*\/)?(\d+)(?:$|[/?])/);
     if (match) {
         return el('iframe', { attrs: {
             src: `https://player.vimeo.com/video/${match[1]}`,
@@ -115,27 +173,192 @@ function videoEmbedNode(url) {
         } });
     }
 
+    // Autres liens Vimeo (liens de partage/review sans identifiant numérique) :
+    // on passe par l'oEmbed officiel pour récupérer le bon lecteur.
+    if (/vimeo\.com\//.test(propre)) {
+        return videoEmbedVimeoOembed(propre);
+    }
+
+    // Instagram (post/reel public) : astuce du suffixe "/embed"
+    if (/instagram\.com\/(?:p|reel|tv)\//.test(propre)) {
+        const base = propre.split('?')[0].replace(/\/?$/, '/');
+        return el('iframe', { attrs: {
+            src: `${base}embed`,
+            title: 'Vidéo Instagram',
+            loading: 'lazy',
+            allow: 'autoplay; clipboard-write; encrypted-media; picture-in-picture',
+        } });
+    }
+
+    // Dropbox : un lien de partage classique (?dl=0) affiche une page HTML de
+    // prévisualisation, pas la vidéo elle-même. On force le lien direct (raw=1).
+    if (/dropbox\.com\//.test(propre)) {
+        let lienDirect = propre.replace(/([?&])dl=[01]/, '$1raw=1');
+        if (!/[?&]raw=1(&|$)/.test(lienDirect)) {
+            lienDirect += (lienDirect.includes('?') ? '&' : '?') + 'raw=1';
+        }
+        return el('video', { attrs: { src: lienDirect, controls: '', preload: 'metadata' } });
+    }
+
     if (/\.(mp4|webm|ogv)(\?.*)?$/i.test(propre)) {
         return el('video', { attrs: { src: propre, controls: '', preload: 'metadata' } });
     }
 
+    // X / Twitter (et toute plateforme sans embed direct simple) : lien de secours,
+    // car ces plateformes bloquent l'intégration en iframe sans leur script JS officiel.
+    if (/(?:^|\/)(?:x|twitter)\.com\//.test(propre)) {
+        return el('a', { class: 'video-placeholder__lien', attrs: { href: propre, target: '_blank', rel: 'noopener' } }, [
+            el('span', { text: 'Voir la vidéo sur X ↗' }),
+        ]);
+    }
+
+    // Dernier recours : tentative d'iframe générique (fonctionne pour la plupart
+    // des lecteurs vidéo qui fournissent directement une URL "embed").
     return el('iframe', { attrs: { src: propre, title: 'Vidéo', allowfullscreen: '', loading: 'lazy' } });
+}
+
+/** Vimeo n'expose pas toujours un identifiant numérique dans l'URL (liens de
+ *  partage/review) : on interroge leur oEmbed public pour obtenir le lecteur. */
+function videoEmbedVimeoOembed(url) {
+    const conteneur = el('div', { class: 'video-placeholder__embed' });
+
+    fetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`)
+        .then((reponse) => (reponse.ok ? reponse.json() : Promise.reject(new Error('oEmbed indisponible'))))
+        .then((donnees) => {
+            if (!donnees.html) throw new Error('Pas de lecteur retourné');
+            conteneur.innerHTML = donnees.html;
+        })
+        .catch(() => {
+            conteneur.innerHTML = '';
+            conteneur.appendChild(el('a', { class: 'video-placeholder__lien', attrs: { href: url, target: '_blank', rel: 'noopener' } }, [
+                el('span', { text: 'Voir la vidéo sur Vimeo ↗' }),
+            ]));
+        });
+
+    return conteneur;
 }
 
 function initFiltre() {
     const boutons = document.querySelectorAll('.filtre-btn');
-    const videos = document.querySelectorAll('.video-placeholder');
     boutons.forEach((bouton) => {
         bouton.addEventListener('click', () => {
             const filtre = bouton.dataset.filter;
             boutons.forEach((b) => b.classList.remove('active'));
             bouton.classList.add('active');
-            videos.forEach((video) => {
-                const visible = filtre === 'tout' || video.dataset.type === filtre;
-                video.classList.toggle('is-hidden', !visible);
+            // Un seul niveau : soit une tuile seule, soit le bloc "vidéo + texte"
+            // qui l'enveloppe (l'enfant direct évite de compter les deux).
+            // Requêté à chaque clic (pas une seule fois au chargement) car les
+            // photos d'un dossier Google Drive peuvent arriver après coup.
+            document.querySelectorAll('.grille-videos > [data-types]').forEach((item) => {
+                const typesItem = item.dataset.types.split('|');
+                const visible = filtre === 'tout' || typesItem.includes(filtre);
+                item.classList.toggle('is-hidden', !visible);
             });
         });
     });
+}
+
+/** Tuile vidéo (grille de la page projet), avec son texte de contexte si renseigné. */
+function renderVideoTile(video) {
+    const orientation = video.orientation || 'landscape';
+    const tuile = el('div', { class: `video-placeholder video-placeholder--${orientation}` }, [
+        el('span', { class: 'badge-type', text: video.types.join(', ') }),
+    ]);
+
+    const embed = videoEmbedNode(video.url);
+    if (embed) {
+        tuile.appendChild(embed);
+    } else {
+        tuile.appendChild(el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
+    }
+
+    if (!video.texte) {
+        tuile.setAttribute('data-types', video.types.join('|'));
+        return tuile;
+    }
+
+    return el('div', {
+        class: `video-avec-texte video-avec-texte--${orientation}`,
+        attrs: { 'data-types': video.types.join('|') },
+    }, [tuile, el('p', { class: 'video-texte', text: video.texte })]);
+}
+
+/** Tuile "plaquette/document" (PDF à consulter ou télécharger), mêlée aux vidéos. */
+function renderDocumentTile(doc) {
+    const orientation = doc.orientation || 'portrait';
+    return el('div', {
+        class: `video-placeholder video-placeholder--${orientation}`,
+        attrs: { 'data-types': doc.types.join('|') },
+    }, [
+        el('span', { class: 'badge-type', text: doc.types.join(', ') }),
+        el('a', {
+            class: 'plaquette-tile__voir',
+            attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': `Lire "${doc.titre}" en ligne` },
+        }, [el('img', { attrs: { src: doc.cover, alt: doc.titre } })]),
+        el('a', {
+            class: 'plaquette-tile__telecharger',
+            attrs: { href: doc.pdf, download: '', 'aria-label': `Télécharger "${doc.titre}"` },
+        }, [el('span', { html: '<svg><use href="#icon-download"></use></svg>' })]),
+    ]);
+}
+
+/** Extrait l'ID d'un dossier Google Drive depuis un lien complet, ou renvoie
+ *  la valeur telle quelle si c'est déjà juste l'ID. */
+function extraireIdDossierDrive(lien) {
+    const match = (lien || '').match(/folders\/([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : (lien || '').trim();
+}
+
+/** Tuile photo issue de Google Drive : même gabarit que les autres tuiles,
+ *  orientation déterminée automatiquement depuis les dimensions du fichier. */
+function renderPhotoTile(fichier, type) {
+    const meta = fichier.imageMediaMetadata || {};
+    const orientation = meta.height > meta.width ? 'portrait' : 'landscape';
+    return el('div', {
+        class: `video-placeholder video-placeholder--${orientation}`,
+        attrs: { 'data-types': type },
+    }, [
+        el('span', { class: 'badge-type', text: type }),
+        el('img', {
+            attrs: {
+                src: `https://lh3.googleusercontent.com/d/${fichier.id}=s1600`,
+                alt: fichier.name || '',
+                loading: 'lazy',
+                style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
+            },
+        }),
+    ]);
+}
+
+/** Charge et affiche les photos d'un dossier Google Drive public (voir
+ *  SITE.googleDriveApiKey et "driveFolder" sur un projet dans data.js). */
+async function chargerPhotosDrive(projet, grille) {
+    if (!projet.driveFolder) return;
+    const type = projet.driveType || 'Photographie';
+
+    if (!SITE.googleDriveApiKey || SITE.googleDriveApiKey === 'YOUR_GOOGLE_DRIVE_API_KEY') {
+        grille.appendChild(el('div', { class: 'video-placeholder video-placeholder--landscape', attrs: { 'data-types': type } }, [
+            el('span', { class: 'badge-type', text: type }),
+            el('span', { html: "Configure ta clé Google Drive<br>dans assets/js/data.js (SITE.googleDriveApiKey)" }),
+        ]));
+        return;
+    }
+
+    const idDossier = extraireIdDossierDrive(projet.driveFolder);
+    const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`'${idDossier}' in parents and mimeType contains 'image/' and trashed = false`)}&fields=${encodeURIComponent('files(id,name,imageMediaMetadata)')}&key=${SITE.googleDriveApiKey}`;
+
+    try {
+        const reponse = await fetch(url);
+        if (!reponse.ok) throw new Error('Erreur API Google Drive');
+        const donnees = await reponse.json();
+        const photos = (donnees.files || []).filter((f) => f.imageMediaMetadata);
+        photos.forEach((photo) => grille.appendChild(renderPhotoTile(photo, type)));
+    } catch (erreur) {
+        grille.appendChild(el('div', { class: 'video-placeholder video-placeholder--landscape', attrs: { 'data-types': type } }, [
+            el('span', { class: 'badge-type', text: type }),
+            el('span', { text: "Impossible de charger les photos Drive : vérifie la clé API et le partage du dossier." }),
+        ]));
+    }
 }
 
 function renderDetail() {
@@ -150,7 +373,7 @@ function renderDetail() {
         root.appendChild(el('div', { class: 'container', attrs: { style: 'padding:160px 0;text-align:center;color:#fff;' } }, [
             el('h1', { text: 'Projet introuvable' }),
             el('p', { attrs: { style: 'margin:20px 0' } }, [
-                el('a', { class: 'btn', text: 'Retour aux projets', attrs: { href: 'projets.html' } }),
+                el('a', { class: 'btn', attrs: { href: 'projets.html' } }, [el('span', { text: 'Retour aux projets' })]),
             ]),
         ]));
         return;
@@ -176,35 +399,27 @@ function renderDetail() {
     const types = getVideoTypes(projet);
     if (types.length > 1) {
         const filtre = el('div', { class: 'filtre' }, [
-            el('button', { class: 'filtre-btn active', text: 'Tout', attrs: { type: 'button', 'data-filter': 'tout' } }),
+            el('button', { class: 'filtre-btn active', attrs: { type: 'button', 'data-filter': 'tout' } }, [el('span', { text: 'Tout' })]),
         ]);
         types.forEach((type) => {
-            filtre.appendChild(el('button', { class: 'filtre-btn', text: type, attrs: { type: 'button', 'data-filter': type } }));
+            filtre.appendChild(el('button', { class: 'filtre-btn', attrs: { type: 'button', 'data-filter': type } }, [el('span', { text: type })]));
         });
         container.appendChild(filtre);
     }
 
     const grille = el('div', { class: 'grille-videos' });
-    projet.videos.forEach((video) => {
-        const orientation = video.orientation || 'landscape';
-        const tuile = el('div', {
-            class: `video-placeholder video-placeholder--${orientation}`,
-            attrs: { 'data-type': video.type },
-        }, [el('span', { class: 'badge-type', text: video.type })]);
-
-        const embed = videoEmbedNode(video.url);
-        if (embed) {
-            tuile.appendChild(embed);
-        } else {
-            tuile.appendChild(el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
-        }
-        grille.appendChild(tuile);
-    });
+    (projet.documents || []).forEach((doc) => grille.appendChild(renderDocumentTile(doc)));
+    projet.videos.forEach((video) => grille.appendChild(renderVideoTile(video)));
     container.appendChild(grille);
+    chargerPhotosDrive(projet, grille);
 
     if (projet.softwares && projet.softwares.length) {
         const badges = el('div', { class: 'badges' });
-        projet.softwares.forEach((logiciel) => badges.appendChild(el('span', { class: 'software-badge', text: logiciel })));
+        projet.softwares.forEach((sigle) => {
+            const icone = SOFTWARE_ICONS[sigle];
+            if (!icone) return;
+            badges.appendChild(el('img', { class: 'software-icon', attrs: { src: icone.src, alt: icone.nom } }));
+        });
         container.appendChild(el('div', { class: 'logiciels' }, [badges, el('h2', { text: 'Logiciels utilisés' })]));
     }
 
@@ -225,7 +440,11 @@ function initContactForm() {
 
     const configure = SITE.formspreeId && SITE.formspreeId !== 'YOUR_FORM_ID';
     if (configure) {
-        form.action = `https://formspree.io/f/${SITE.formspreeId}`;
+        // SITE.formspreeId accepte soit l'URL complète (https://formspree.io/f/xxxxx),
+        // soit juste l'identifiant (xxxxx) fourni par Formspree.
+        form.action = SITE.formspreeId.startsWith('http')
+            ? SITE.formspreeId
+            : `https://formspree.io/f/${SITE.formspreeId}`;
     }
 
     form.addEventListener('submit', async (event) => {
@@ -269,6 +488,7 @@ function initContactForm() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    initIconSprite();
     initSocialLinks();
     initCopyYear();
     renderHome();
