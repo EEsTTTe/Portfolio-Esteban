@@ -8,47 +8,64 @@
 </head>
 <body>
 
+    <header class="site-nav">
+        <div class="container">
+            <div class="site-nav__bar">
+                <a class="site-nav__logo" href="index.html">
+                    <img src="assets/img/logo.png" alt="ES Prod">
+                </a>
+                <nav class="site-nav__liens">
+                    <a href="projets.html"><span>Projets</span></a>
+                    <a href="contact.html"><span>Contact</span></a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
     <header class="hero container">
         <span class="tag">Monteur vidéo</span>
         <h1>Esteban Santa</h1>
         <p>Vidéaste polyvalent, curieux et motivé d'apprendre de nouvelles choses pour aller encore plus loin !</p>
         <div class="actions">
-            <a class="btn" href="projets.html">Tous mes projets</a>
-            <a class="btn" href="contact.html">Contactez moi !</a>
+            <a class="btn" href="projets.html"><span>Tous mes projets</span></a>
+            <a class="btn" href="contact.html"><span>Contactez moi !</span></a>
         </div>
     </header>
 
-    <section class="profil container" id="profil">
-        <div class="moi">
-            <img class="portrait" src="assets/img/esteban.jpg" alt="Esteban Santa">
-            <h2>Salut, je suis Esteban</h2>
-            <p class="sous-titre">Vidéaste polyvalent</p>
-            <div class="reseaux">
-                <a class="icon-social" data-social="x" target="_blank" rel="noopener" aria-label="X (Twitter)">
-                    <svg><use href="assets/img/icons.svg#icon-x"></use></svg>
-                </a>
-                <span class="reseaux-separateur"></span>
-                <a class="icon-social" data-social="insta" target="_blank" rel="noopener" aria-label="Instagram">
-                    <svg><use href="assets/img/icons.svg#icon-instagram"></use></svg>
-                </a>
-                <span class="reseaux-separateur"></span>
-                <a class="icon-social" data-social="linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
-                    <svg><use href="assets/img/icons.svg#icon-linkedin"></use></svg>
-                </a>
+    <section class="profil-bg" id="profil">
+        <div class="profil container">
+            <div class="moi">
+                <img class="portrait" src="assets/img/esteban.jpg" alt="Esteban Santa">
+                <h2>Salut, je suis Esteban</h2>
+                <p class="sous-titre">Vidéaste polyvalent</p>
+                <div class="reseaux">
+                    <a class="icon-social" data-social="x" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                        <svg><use href="#icon-x"></use></svg>
+                    </a>
+                    <span class="reseaux-separateur"></span>
+                    <a class="icon-social" data-social="insta" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg><use href="#icon-instagram"></use></svg>
+                    </a>
+                    <span class="reseaux-separateur"></span>
+                    <a class="icon-social" data-social="linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <svg><use href="#icon-linkedin"></use></svg>
+                    </a>
+                </div>
+                <span class="divider-h"></span>
+                <div class="actions">
+                    <a class="btn" href="assets/cv-esteban-santa.pdf" target="_blank"><span>Mon CV</span></a>
+                    <a class="btn" href="contact.html"><span>Contactez moi !</span></a>
+                </div>
             </div>
-            <div class="actions">
-                <a class="btn" href="assets/cv-esteban-santa.pdf" target="_blank">Mon CV</a>
-                <a class="btn" href="contact.html">Contactez moi !</a>
+
+            <div class="presentation">
+                <p>Depuis mes 12 ans, je regarde presque tous les jours des contenus sur internet et les réseaux sociaux. J'ai toujours rêvé de, moi aussi, laisser ma trace quelque part dans ce vaste monde.</p>
+                <p>Ce qui me plaît le plus ? Le montage ! J'ai, à plusieurs reprises essayé, étant enfant, d'apprendre sans vraiment y parvenir. Jusqu'à ce que je me plonge pleinement dedans et que j'en fasse aujourd'hui ma raison de sortir de mon lit.</p>
+                <p>Grâce à mon diplôme de BUT Métier du Multimédia et de l'Internet, j'ai pu approfondir mes compétences dans le large domaine du multimédia en général et travailler sur des projets des plus variés.</p>
+                <p>À côté de ça, je me suis passionné pour le sport électronique, le e-sport, c'est ce qui m'a amené à travailler chez Shifters, qui a grandement forgé mes compétences actuelles.</p>
+
+                <div class="timeline" id="timeline"></div>
             </div>
-        </div>
-
-        <div class="presentation">
-            <p>Depuis mes 12 ans, je regarde presque tous les jours des contenus sur internet et les réseaux sociaux. J'ai toujours rêvé de, moi aussi, laisser ma trace quelque part dans ce vaste monde.</p>
-            <p>Ce qui me plaît le plus ? Le montage ! J'ai, à plusieurs reprises essayé, étant enfant, d'apprendre sans vraiment y parvenir. Jusqu'à ce que je me plonge pleinement dedans et que j'en fasse aujourd'hui ma raison de sortir de mon lit.</p>
-            <p>Grâce à mon diplôme de BUT Métier du Multimédia et de l'Internet, j'ai pu approfondir mes compétences dans le large domaine du multimédia en général et travailler sur des projets des plus variés.</p>
-            <p>À côté de ça, je me suis passionné pour le sport électronique, le e-sport, c'est ce qui m'a amené à travailler chez Shifters, qui a grandement forgé mes compétences actuelles.</p>
-
-            <div class="timeline" id="timeline"></div>
         </div>
     </section>
 
@@ -56,15 +73,15 @@
         <div class="entete">
             <span class="tag">Derniers projets</span>
             <div class="actions">
-                <a class="btn" href="projets.html">Tous mes projets</a>
-                <a class="btn" href="contact.html">Contactez moi !</a>
+                <a class="btn" href="projets.html"><span>Tous mes projets</span></a>
+                <a class="btn" href="contact.html"><span>Contactez moi !</span></a>
             </div>
         </div>
 
         <div class="grille-projets" id="home-projects"></div>
 
         <div class="voir-plus">
-            <a class="btn" href="projets.html">Voir plus</a>
+            <a class="btn" href="projets.html"><span>Voir plus</span></a>
         </div>
     </section>
 
@@ -76,22 +93,22 @@
                 </div>
                 <div class="reseaux">
                     <a class="icon-social icon-social--clair" data-social="x" target="_blank" rel="noopener" aria-label="X (Twitter)">
-                        <svg><use href="assets/img/icons.svg#icon-x"></use></svg>
+                        <svg><use href="#icon-x"></use></svg>
                     </a>
                     <span class="reseaux-separateur"></span>
                     <a class="icon-social icon-social--clair" data-social="insta" target="_blank" rel="noopener" aria-label="Instagram">
-                        <svg><use href="assets/img/icons.svg#icon-instagram"></use></svg>
+                        <svg><use href="#icon-instagram"></use></svg>
                     </a>
                     <span class="reseaux-separateur"></span>
                     <a class="icon-social icon-social--clair" data-social="linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
-                        <svg><use href="assets/img/icons.svg#icon-linkedin"></use></svg>
+                        <svg><use href="#icon-linkedin"></use></svg>
                     </a>
                 </div>
             </div>
             <nav>
-                <a href="projets.html">Projets</a>
-                <a href="index.html#profil">Profil</a>
-                <a href="contact.html">Contact</a>
+                <a href="projets.html"><span>Projets</span></a>
+                <a href="index.html#profil"><span>Profil</span></a>
+                <a href="contact.html"><span>Contact</span></a>
             </nav>
             <p class="copy">&copy; <span id="copy-year"></span> ES</p>
         </div>
