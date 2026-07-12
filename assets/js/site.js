@@ -265,11 +265,22 @@ function renderVideoTile(video) {
         el('span', { class: 'badge-type', text: video.types.join(', ') }),
     ]);
 
-    const embed = videoEmbedNode(video.url);
-    if (embed) {
-        tuile.appendChild(embed);
+    if (video.image) {
+        tuile.appendChild(el('img', {
+            attrs: {
+                src: video.image,
+                alt: video.types.join(', '),
+                loading: 'lazy',
+                style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
+            },
+        }));
     } else {
-        tuile.appendChild(el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
+        const embed = videoEmbedNode(video.url);
+        if (embed) {
+            tuile.appendChild(embed);
+        } else {
+            tuile.appendChild(el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
+        }
     }
 
     if (!video.texte) {
@@ -283,22 +294,34 @@ function renderVideoTile(video) {
     }, [tuile, el('p', { class: 'video-texte', text: video.texte })]);
 }
 
-/** Tuile "plaquette/document" (PDF à consulter ou télécharger), mêlée aux vidéos. */
+/** Tuile "plaquette/document" (PDF à consulter ou télécharger) : cadre carte de projet + layout image/texte. */
 function renderDocumentTile(doc) {
-    const orientation = doc.orientation || 'portrait';
+    const orientation = doc.orientation || 'landscape';
     return el('div', {
-        class: `video-placeholder video-placeholder--${orientation}`,
+        class: `video-placeholder video-placeholder--${orientation} video-placeholder--doc`,
         attrs: { 'data-types': doc.types.join('|') },
     }, [
-        el('span', { class: 'badge-type', text: doc.types.join(', ') }),
-        el('a', {
-            class: 'plaquette-tile__voir',
-            attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': `Lire "${doc.titre}" en ligne` },
-        }, [el('img', { attrs: { src: doc.cover, alt: doc.titre } })]),
-        el('a', {
-            class: 'plaquette-tile__telecharger',
-            attrs: { href: doc.pdf, download: '', 'aria-label': `Télécharger "${doc.titre}"` },
-        }, [el('span', { html: '<svg><use href="#icon-download"></use></svg>' })]),
+        el('div', { class: 'card-projet' }, [
+            el('div', { class: 'card-projet__inner plaquette-tile' }, [
+                el('img', { class: 'plaquette-tile__cover', attrs: { src: doc.cover, alt: doc.titre, loading: 'lazy' } }),
+                el('div', { class: 'plaquette-tile__contenu' }, [
+                    el('h3', { class: 'plaquette-tile__titre', text: doc.titre }),
+                    doc.description ? el('p', { class: 'plaquette-tile__description', text: doc.description }) : null,
+                    el('div', { class: 'plaquette-tile__actions' }, [
+                        el('a', {
+                            class: 'plaquette-tile__lien',
+                            text: 'Lire',
+                            attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': `Lire "${doc.titre}" en ligne` },
+                        }),
+                        el('a', {
+                            class: 'plaquette-tile__lien',
+                            text: 'Télécharger',
+                            attrs: { href: doc.pdf, download: '', 'aria-label': `Télécharger "${doc.titre}"` },
+                        }),
+                    ]),
+                ]),
+            ]),
+        ]),
     ]);
 }
 
