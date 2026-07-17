@@ -30,6 +30,14 @@
  *      - image       : (remplace "url") pour afficher une image fixe à la place
  *                      d'une vidéo (storyboard, visuel, capture d'écran...) —
  *                      dépose l'image dans assets/img/ et indique son chemin ici
+ *      - medias      : (remplace "url"/"image") pour réunir PLUSIEURS médias
+ *                      (images et/ou vidéos) dans une seule tuile qui partage
+ *                      un seul badge de types et un seul texte de contexte,
+ *                      au lieu de créer une tuile (et un badge) par média.
+ *                      La tuile groupée prend toute la largeur de la ligne et
+ *                      est centrée. Liste de { url } ou { image }, ex :
+ *                      medias: [{ image: 'assets/img/documents/photo.jpg' },
+ *                               { url: 'https://www.dropbox.com/.../video.mp4' }]
  *      - types       : liste des catégories de la vidéo (une ou plusieurs) ->
  *                      génère automatiquement la barre de filtre (si un seul
  *                      type existe au total pour le projet, la barre de
@@ -41,6 +49,10 @@
  *                      la vidéo (reste attaché à elle pour le filtre).
  *                      Pour sauter une ligne, mets \n dans le texte, ex :
  *                      "Première ligne\nDeuxième ligne"
+ *      - separateur  : mets { separateur: true } comme entrée (à la place de
+ *                      tout le reste) pour insérer une fine barre de
+ *                      séparation entre deux projets/groupes de la grille,
+ *                      à l'endroit exact où tu places cette entrée
  *  - driveFolder : (optionnel, remplace "videos") pour une galerie photo :
  *                  colle simplement le lien d'un dossier Google Drive partagé
  *                  ("Tous les utilisateurs disposant du lien"), et toutes les
@@ -80,9 +92,16 @@ const PROJECTS = [
             { url: 'https://www.dropbox.com/scl/fi/oekc2xd9fr5v5edzgwlh9/Superstike_avis.mp4?rlkey=u0z63em9fvaut2wlfya2xnxr7&st=kqso4g3v&dl=0', types: ['Publicité', 'Short content'], orientation: 'portrait'},
             { url: 'https://www.dropbox.com/scl/fi/d4mfe9vhnq8qgq7moyuc3/Alphabet-of-R6-players.mp4?rlkey=hoi4ynr25y42ttn09dl05idy3&st=y9420156&dl=0', types: ['Short content'], orientation: 'portrait'},
             { url: 'https://www.dropbox.com/scl/fi/6jgq58ktrq62cnfd2v453/Edushort_R6.mp4?rlkey=tzscbfwdod8ghlziixpaajw71&st=9vr1cwcm&dl=0', types: ['Short content', 'Motion design'], orientation: 'portrait'},
+            { url:'https://www.dropbox.com/scl/fi/3prol6em5opbi0dppkjla/GuesstheItem.mp4?rlkey=peyn2sj3jtmt0576fymiv3q2f&st=054dsnxc&dl=0', types: ['Short content'], orientation: 'portrait'},
+            { url:'https://www.dropbox.com/scl/fi/ngdpndk5hsswixtip6lcb/GuessTheRank_2.mp4?rlkey=g6geld6leqhfl9ild2vevlek3&st=srphkpwq&dl=0', types: ['Short content'], orientation: 'portrait'},
+            { url:'https://www.dropbox.com/scl/fi/5u24hew57wfzzo8qit2ej/ITW_Lyloun.mp4?rlkey=rpk7tyubrgjrza3x5xho7fb4v&st=fhi1ztja&dl=0', types: ['Interview'], orientation: 'portrait'},
+            { url:'https://www.dropbox.com/scl/fi/ryswzk1jikxadjwzdm9qo/Herofest.mp4?rlkey=qp0l2lfkj50ood2016e3blgok&st=ji1kcjgs&dl=0', types: ['After movie'], orientation: 'portrait'},
+            
+            
+            
         ],
     },
-
+    
     {
         slug: 'le-scarabee',
         titre: 'Le Scarabée',
@@ -90,27 +109,26 @@ const PROJECTS = [
         image: 'assets/img/projects/scarabee.jpg',
         imageFit: 'contain',
         description: [
-            "Stage de chargé de communication au Scarabée, une salle de concert à Chambéry.",
-            "Description à compléter : présente ici le contexte du projet, tes missions et ce que tu as produit (affiches, montages, captations...).",
+            "Pendant mon stage de deuxième années de BUT MMI, j'ai travaillé dans la salle de spectacle de Chambéry-le-Haut, Le Scarabée.",
+            "Pendant ce stage, mon travail consistait à préparer les éléments de communication de la saison pour la salle. Plaquette de programmation, affiches mensuelles, kakemono, captation de spectacles, teaser vidéo etc…"
         ],
         softwares: ['Pr', 'Id', 'Ps'],
         documents: [
             {
                 titre: 'Plaquette saison 2025-2026',
-                description: "Bla bla texte modifiable : présente ici la plaquette en une phrase ou deux.",
+                description: "La principale mission de mon stage aura été la réalisation de la plaquette de programmation de l'année. Une tâche qui aura pris la majeure partie de mon temps étant donné la  multitude d'informations à collecter.\n\n'ai imaginé la disposition et les différents éléments graphique à partir de la première de couveture (designé par le graphiste de la ville)",
                 cover: 'assets/img/documents/plaquette-scarabee.jpg',
                 pdf: 'assets/docs/plaquette-scarabee.pdf',
-                types: ['Plaquette de saison 2025-2026'],
+                types: ['Graphisme'],
                 orientation: 'landscape',
             },
         ],
         videos: [
-            { url: '', types: ['Montage'], orientation: 'landscape' },
-            { url: '', types: ['Montage'], orientation: 'landscape' },
-            { url: '', types: ['Captation'], orientation: 'portrait' },
+            { url: 'https://www.dropbox.com/scl/fi/uh2u15ex43hilhheg0wyy/Teaser-cin-v5_1.mp4?rlkey=n4pg8tq3gltx4yt0n9j7elpcb&st=2mmwd33k&dl=0', types: ['Montage'], orientation: 'landscape', texte: "Voici le teaser de la salle de spectacle qui a été diffusé dans les cinémas locaux tout au long de l'année."},
+            { url: 'https://www.dropbox.com/scl/fi/t9f0tfcy7obnpjyukclre/Teaservf_1.mp4?rlkey=fl9q1lzlwrbzxr5yotcb4pth6&st=ymh3xzly&dl=0', types: ['Montage'], orientation: 'landscape', texte: "À chambéry, il y a une semaine d'activités dédiée aux enfants: le festival du 5e éléphant. Voici donc le teaser vidéo pour les spectacles lors de cette semaine, destiné aux enfants." },
         ],
     },
-
+    
     {
         slug: 'projets-iut',
         titre: 'Projets IUT',
@@ -118,34 +136,95 @@ const PROJECTS = [
         image: 'assets/img/projects/iut.jpg',
         imageFit: 'contain',
         description: [
-            "Sélection de projets réalisés pendant mon BUT MMI à l'IUT de Chambéry.",
-            "Description à compléter : détaille ici les différents projets étudiants regroupés dans cette réalisation.",
+            "Après 3 ans en BUT Métier du Multimédia et de l'Internet à Chambéry, j'ai pu apprendre beaucoup de choses : Gestion de projet, étapes de production, graphisme, conception, motion design, communication etc…",
+
+            "Cette formation m'a permis de devenir un véritable couteau suisse du multimédia ",
+            "J'ai regroupé ici mes meilleures réalisations de cours de ces 3 années.",
         ],
         softwares: ['Pr', 'Ae', 'Ai', 'Ps'],
         videos: [
-            { url: 'https://www.dropbox.com/scl/fi/b9z8u9tk6zinfrvw3nzpd/bloop.mp4?rlkey=g27gq9nbx3p8o8ei8vh9ixndg&st=8d02jnks&dl=0', types: ['Montage', 'Motion design', 'Captation', 'DA'], orientation: 'landscape', texte: "B-LOOP - Court Métrage \n\n Notre seule indication : b-loop, et faire une réalisation audiovisuelle à partir de ce mot. Cette réalisation montre le quotidien d'une personne prise dans une boucle. Un jour, elle change de musique, met la face B (b-side) de son vinyle et casse ainsi sa boucle, ➡️ BREAK THE LOOP → B-LOOP. En plus du sujet, nous devions utiliser des techniques de colorimétrie et d'animation rajoutées par dessus la vidéo."},
-            { url: 'https://www.dropbox.com/scl/fi/66yl74ph0jz4j1bwkd6sv/Rendu-EEVEE-V6.mp4?rlkey=pmeix3mzdl1ge8x1hsymltrf9&st=oycx9dsz&dl=0', types: ['DA', '3D'], orientation: 'landscape', texte:"Cube challenge - 3D Blender Voici le résultat de trois jours sur Blender : À trois, nous avons construit un monde autour de cette idée : un environnement post-apocalyptique, futuriste — où des entités inspirées de 'Ophanim' semblent avoir pris le dessus. Je me suis occupé d'une grande partie de la modélisation des éléments du décor."},
-            { url: 'https://www.dropbox.com/scl/fi/lvdddz0owcqz0bd3eke2z/Video-by-scarabee_chambery-DYCxsyojc1t.mp4?rlkey=je2ptvkfnkx2vdtluoeh422ad&st=8lbvkiv0&dl=0', types: ['Montage', 'Motion design', 'Captation'], orientation: 'landscape', texte:""},
-            { url: 'https://www.dropbox.com/scl/fi/jl355ep989rwkjr3cvlt1/Video-by-scarabee_chambery-DYm09p-CfiF.mp4?rlkey=9owlw783nvynmgc14e43vkrae&st=hhitcsy8&dl=0', types: ['Montage', 'Motion design', 'Captation'], orientation: 'landscape', texte:""},
-            { url: 'https://www.dropbox.com/scl/fi/268bfpabnw25zp45yj3rt/GROUPE_11_MOTION_DESIGN_PistonoBasile_SantaEsteban_2.mp4?rlkey=f9mj7thf0xxtp0m933l42mwpn&st=7yrvtwct&dl=0', types: ['Motion design', 'DA', 'Graphisme'], orientation: 'landscape', texte: "Qu'est ce qu'un hologramme - Motion design En une semaine, nous devions réaliser un motion design sur un sujet imposé. Faire de la vulgarisation scientifique et expliquer ce qu'est un hologramme en 1 minute ! Écriture, storyboard, dessins, réalisation, voix-off, sound design... Peu de temps pour tout faire" },
+            { url: 'https://www.dropbox.com/scl/fi/b9z8u9tk6zinfrvw3nzpd/bloop.mp4?rlkey=g27gq9nbx3p8o8ei8vh9ixndg&st=8d02jnks&dl=0', types: ['Montage', 'Motion design', 'Captation', 'DA'], orientation: 'landscape', texte: "B-LOOP - Court Métrage\n\n Notre seule indication : b-loop, et faire une réalisation audiovisuelle à partir de ce mot.\nCette réalisation montre le quotidien d'une personne prise dans une boucle. Un jour, elle change de musique, met la face B (b-side) de son vinyle et casse ainsi sa boucle,\n\n➡️ BREAK THE LOOP → B-LOOP.\nEn plus du sujet, nous devions utiliser des techniques de colorimétrie et d'animation rajoutées par dessus la vidéo."},
+            
+            { separateur: true },
 
-            { url: 'https://www.dropbox.com/scl/fi/53ztaetmrg0wkjqgiiykk/NOTHING-V5-HQ_1.mp4?rlkey=itwvabvlr56xjlzi6qhesd3t8&st=y7jyyvf0&dl=0', types: ['Captation'], orientation: 'portrait', texte: "Nothing ear - Publicité Pour ce projet, nous devions réaliser une publicité sur le produit de notre choix. Notre choix s'est porté sur les écouteurs de la marque Nothing, pour la DA de la marque ainsi que la possession du produit en physique. 3D, match-cut, vidéo classique -> ce projet nous à permis de tester plusieurs techniques que nous n'avions pas l'habitude de faire" },
-            { url: 'https://www.dropbox.com/scl/fi/idpa2adr9leake16vwsy3/Odeves_v4_2.mp4?rlkey=dgfffeiuqwzd0k06w09eeyoj5&st=2aqc3luz&dl=0', types: ['Montage', 'Motion design', 'Captation'], orientation: 'portrait', texte:"Interview O DEVES Pour ce premier projet avec de véritables clients, nous devions réaliser une vidéo de présentation du groupe de musique O'DEVES, un groupe de musique tzigane. Le projet devait respecter plusieurs contraintes et cette vidéo en est le produit final, validé par le groupe !"},
-            { url: 'https://www.dropbox.com/scl/fi/yuajavwgydqhm44i72xfx/Radio-Pirates-Delgado-Santa-Pistono_3.mp4?rlkey=koyxapp21758k72urpfmigs8u&st=7tv3358j&dl=0', types: ['Podcast'], orientation: 'carre', texte:"L'histoire des radios pirates - Podcast Pour ce projet, nous devions créer un podcast de A à Z. En quatre jours nous avons dû prendre connaissance du sujet, créer le scénario, enregistrer la voix-off, chercher des archives et enfin monter le tout ! En plus du podcast, nous devions aussi réaliser un aaudiogramme. En bref, un projet très instructif"},
-            { url: 'https://www.dropbox.com/scl/fi/a7tjq5ce4x2ja612b05fr/Stop-motion_Esteban_Santa.mp4?rlkey=rq2g4amut26p4y12cgcq6z153&st=zdrspxn9&dl=0', types: ['Montage', 'DA', 'Graphisme'], orientation: 'portrait', texte:"stop motion"},
-            { url: 'https://www.dropbox.com/scl/fi/l7u04dmjd5h4gz7z7ctjn/video-finale-vfini_1.mp4?rlkey=3h5d976zha69kp3sj69ltres8&st=wi0q5rui&dl=0', types: ['Motion design', '3D'], orientation: 'portrait', texte:"Paperly - Publicité Lors d'un projet porté sur la création d'une application, je me suis occupé de créer une publicité pour la présenter. Je me suis inspiré de ce qui se fait en terme de présentation d'application pour avoir un rendu similaire et j'ai pu m'essayer à l'incrustration d'objet 3D dans Afters Effects "},
-            { url: 'https://www.dropbox.com/scl/fi/sgl651ge3n1v5e41mi7l1/Anim_logo_Esteban_Santa.mov?rlkey=gr4jn36pcdicugz0ltopvdjc8&st=evwyhhvn&dl=0', types: ['Motion design', 'DA'], orientation: 'carre', texte:"anim logo"},
+            { medias: [
+                { url: 'assets/img/documents/Storyboard.jpg'},
+                { url: 'assets/img/documents/Désir.jpg'},
+                { url: 'https://www.dropbox.com/scl/fi/kb0z23dzoiz6dtpjb4ae3/Esteban_SANTA_D-sir_1.mp4?rlkey=d2tq9thlad6lyrqxnmywnz23a&st=zvifpnvt&dl=0'},
+            ],types: ['DA', 'Vidéo', 'Motion design'], orientation: 'landscape', texte: "Désir - Projet de fin d'étude\n\nMon dernier projet de MMI !\nIci, le but était de partir d'une photo d'un poème et d'une couleur et faire une réalisation multimédia.\n\nJe me suis inspiré de la symbolique de la construction d'un gratte-ciel, la volonté de vouloir aller toujours plus haut, avec une de la couleur bleue, la divinité.\nNotre personnage va rentrer dans une espèce d'obsession, une volonté de toucher le ciel, représenté par cette étoile. C'est ici que le poème rentre en jeu, il rappelle que nous ne sommes que des humains, rattrapés par le temps."},
+            
+            { separateur: true },
+            
+            {medias: [
+                { url: 'assets/img/documents/blender.jpg'},
+                { url: 'https://www.dropbox.com/scl/fi/66yl74ph0jz4j1bwkd6sv/Rendu-EEVEE-V6.mp4?rlkey=pmeix3mzdl1ge8x1hsymltrf9&st=oycx9dsz&dl=0'},
+            ], types: ['DA', '3D'], orientation: 'landscape', texte: "Cube challenge - 3D Blender\n\nVoici le résultat de trois jours sur Blender : À trois, nous avons construit un monde autour de cette idée : un environnement post-apocalyptique, futuriste — où des entités inspirées de 'Ophanim' semblent avoir pris le dessus.\n\nSur ce projet, je me suis occupé d'une grande partie de la modélisation des éléments du décor."},          
+           
+            { separateur: true },
+            
+            { medias: [ 
+             { url: 'https://www.dropbox.com/scl/fi/lvdddz0owcqz0bd3eke2z/Video-by-scarabee_chambery-DYCxsyojc1t.mp4?rlkey=je2ptvkfnkx2vdtluoeh422ad&st=8lbvkiv0&dl=0'},
+             { url: 'https://www.dropbox.com/scl/fi/s0t1v81xwv92171s6wdsz/parlons-d-amour.mp4?rlkey=jxv7uljupssub6xnwnss4y9nb&st=ou1oqjk4&dl=0'},
+             { url: 'https://www.dropbox.com/scl/fi/jl355ep989rwkjr3cvlt1/Video-by-scarabee_chambery-DYm09p-CfiF.mp4?rlkey=9owlw783nvynmgc14e43vkrae&st=hhitcsy8&dl=0'},
+             ], types: ['Montage', 'Motion design', 'Captation'], orientation: 'landscape', texte:"Portrait d'artistes - Le scarabée \n\nSérie d'interview métant en valeur des artistes en résidence dans la salle de spectacle du scarabée sous forme de jeu.\n Du contact des artistes jusqu'à la publication, nous nous sommes occupés de tout !\n\nJe me suis occupé de la réalisation du motion design pour les questions, de la prise son, des plans de coupe ainsi que du montage."},
+            
+            
+            { separateur: true },
+            
+            { url: 'https://www.dropbox.com/scl/fi/268bfpabnw25zp45yj3rt/GROUPE_11_MOTION_DESIGN_PistonoBasile_SantaEsteban_2.mp4?rlkey=f9mj7thf0xxtp0m933l42mwpn&st=7yrvtwct&dl=0', types: ['Motion design', 'DA', 'Graphisme'], orientation: 'landscape', texte: "Qu'est ce qu'un hologramme - Motion design\n\nEn une semaine, nous devions réaliser un motion design sur un sujet imposé.\nFaire de la vulgarisation scientifique et expliquer ce qu'est un hologramme en 1 minute ! Écriture, storyboard, dessins, réalisation, voix-off, sound design... Peu de temps pour tout faire\n\nPour ce projet, je me suis occupé de designer les différents éléments ainsi que d'animer 4 scènes sur les 7." },
+
+            { separateur: true },
+            
+            {medias: [
+                {url: 'assets/img/documents/storyboard_nothing.jpg'},
+                {url: 'https://www.dropbox.com/scl/fi/53ztaetmrg0wkjqgiiykk/NOTHING-V5-HQ_1.mp4?rlkey=itwvabvlr56xjlzi6qhesd3t8&st=y7jyyvf0&dl=0'},
+            ], types: ['Captation'], orientation: 'portrait', texte: "Nothing ear - Publicité\n\nPour ce projet, nous devions réaliser une publicité sur le produit de notre choix. Notre choix s'est porté sur les écouteurs de la marque Nothing, pour la DA de la marque ainsi que la possession du produit en physique. \n3D, match-cut, vidéo classique -> ce projet nous à permis de tester plusieurs techniques que nous n'avions pas l'habitude d'utiliser."},
+            
+            { separateur: true },
+
+            { url: 'https://www.dropbox.com/scl/fi/idpa2adr9leake16vwsy3/Odeves_v4_2.mp4?rlkey=dgfffeiuqwzd0k06w09eeyoj5&st=2aqc3luz&dl=0', types: ['Montage', 'Motion design', 'Captation'], orientation: 'portrait', texte:"Interview O DEVES\n\n Pour ce premier projet avec de véritables clients, nous devions réaliser une vidéo de présentation du groupe de musique O'DEVES, un groupe de musique tzigane.\nLe projet devait respecter plusieurs contraintes et cette vidéo en est le produit final, validé par le groupe !"},
+            
+            { separateur: true },
+            
+            { url: 'https://www.dropbox.com/scl/fi/yuajavwgydqhm44i72xfx/Radio-Pirates-Delgado-Santa-Pistono_3.mp4?rlkey=koyxapp21758k72urpfmigs8u&st=7tv3358j&dl=0', types: ['Podcast'], orientation: 'carre', texte:"L'histoire des radios pirates - Podcast \n\nPour ce projet, nous devions créer un podcast de A à Z. En quatre jours nous avons dû prendre connaissance du sujet, créer le scénario, enregistrer la voix-off, chercher des archives et enfin monter le tout !\nEn bref, un projet très instructif"},
+            
+            { separateur: true },
+            
+            { medias: [
+                { url: 'https://www.dropbox.com/scl/fi/a7tjq5ce4x2ja612b05fr/Stop-motion_Esteban_Santa.mp4?rlkey=rq2g4amut26p4y12cgcq6z153&st=zdrspxn9&dl=0' },
+                { url: 'assets/img/documents/BTS_stop motion.jpg' },
+              ], types: ['Montage', 'DA', 'Graphisme'], orientation: 'portrait', texte:"Festival animation Annecy - Stop motion\n\nLe but de ce projet était de réaliser une story de teasing pour le festival d'annimation d'annecy en stop motion.\nCette vidéo met en scène différents background de films d'animation, afin de faire une sorte de rétrospective de cette technique.\n\nLes avez-vous tous reconnus ?"},
+            
+            { separateur: true },
+            
+            { url: 'https://www.dropbox.com/scl/fi/l7u04dmjd5h4gz7z7ctjn/video-finale-vfini_1.mp4?rlkey=3h5d976zha69kp3sj69ltres8&st=wi0q5rui&dl=0', types: ['Motion design', '3D'], orientation: 'portrait', texte:"Paperly - Publicité\n\nLors d'un projet de 2e année porté sur la création d'une application, je me suis occupé de créer une publicité pour la présenter lors de notre soutenance. \nJe me suis inspiré de ce qui se fait en terme de présentation d'application pour avoir un rendu similaire et j'ai pu m'essayer à l'incrustration d'objet 3D dans Afters Effects pour la première fois"},
+            
+            { separateur: true },
+            
+            { medias: [
+                { url: 'assets/img/documents/storyboard_backmarket.jpg'},
+                { url: 'https://www.dropbox.com/scl/fi/sgl651ge3n1v5e41mi7l1/Anim_logo_Esteban_Santa.mov?rlkey=gr4jn36pcdicugz0ltopvdjc8&st=evwyhhvn&dl=0'},
+            ], types: ['Motion design', 'DA'], orientation: 'carre', texte:"Backmarket\n\n1h30 pour réaliser une animation de logo !\n En passant par un storyboard et un oral pour justifier ses choix. \n\nMon but avec cette animation est de représenter l'essence même de Backmarket : réparer les appareils endommagés pour les remettre à neuf."},
+            
+            { separateur: true },
+            
+            { medias: [
+                { url: 'assets/img/documents/Alphabet-Santa EstebanVF.jpg'},
+                { url: 'assets/img/documents/Pengramme GM-Santa EstebanVF.jpg'},
+            ], types: ['DA', 'Graphisme'], orientation: 'portrait', texte: "Zigouigoui - Typographie\n\nTravail de conception typographique. Le but était de réaliser une typographie modulaire, c'est-à-dire qui reprends les même éléments pour tout les caractères. Ma typographie est basée sur l'idée d'une épingle qu'on vient déplier et tordre dans tout les sens, d'où le nom : Zigouigoui."},
+            
         ],
     },
-
+    
     {
         slug: 'mariage',
         titre: 'Mariage',
         categories: ['Photographie'],
         image: 'assets/img/projects/mariage.jpg',
         description: [
-            "Reportage photo réalisé à l'occasion d'un mariage.",
-            "Description à compléter.",
+            "Pour mon premier travail en dehors de l'IUT, j'ai été engagé en tant que photographe de mariage.",
+
+            "J'ai eu la chance de pouvoir immortaliser cet unique et merveilleux moment.",
         ],
         softwares: ['Lr', 'Ps'],
         driveFolder: 'https://drive.google.com/drive/folders/1YZxln4mXn1hwIdvr8G9gjDPoJE5hYQmx?usp=sharing',
@@ -159,8 +238,8 @@ const PROJECTS = [
         categories: ['Photographie'],
         image: 'assets/img/projects/printemps-iut.jpg',
         description: [
-            "Reportage photo réalisé lors du Printemps des IUT.",
-            "Description à compléter.",
+            "1er Printemps des IUT, évènement réunissant les directeurs de tout les IUT de l'académie de Grenoble. Pour marquer le coup, l'IUT à décidé d'engager des étudiants afin de réaliser un after movie et un reportage photo.",
+    
         ],
         softwares: ['Lr', 'Ps'],
         driveFolder: 'https://drive.google.com/drive/folders/1PUlnoE74pLZmkdwBcfCf-8rLfPbQOcx_?usp=drive_link',

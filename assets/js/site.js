@@ -136,6 +136,7 @@ function getVideoTypes(projet) {
         });
     });
     projet.videos.forEach((video) => {
+        if (video.separateur) return;
         video.types.forEach((type) => {
             if (!types.includes(type)) types.push(type);
         });
@@ -150,6 +151,20 @@ function getVideoTypes(projet) {
 function videoEmbedNode(url) {
     const propre = (url || '').trim();
     if (!propre) return null;
+
+    // Fichier image (storyboard, capture d'écran...) : une vraie balise <img>
+    // remplit la tuile (object-fit:cover), contrairement à un iframe générique
+    // qui affiche l'image à sa taille native, en boîte au milieu de la tuile.
+    if (/\.(jpe?g|png|gif|webp|svg|bmp)(\?.*)?$/i.test(propre)) {
+        return el('img', {
+            attrs: {
+                src: propre,
+                alt: '',
+                loading: 'lazy',
+                style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
+            },
+        });
+    }
 
     let match = propre.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{6,})/);
     if (match) {
@@ -254,13 +269,78 @@ function initFiltre() {
                 const visible = filtre === 'tout' || typesItem.includes(filtre);
                 item.classList.toggle('is-hidden', !visible);
             });
+
+            // Une barre de séparation n'a de sens qu'entre deux groupes qui ont
+            // chacun encore un élément visible. Si un ou plusieurs groupes
+            // entièrement vides (et leurs séparateurs) se retrouvent entre deux
+            // groupes visibles, il ne faut garder qu'UN SEUL séparateur pour
+            // marquer cette frontière (pas les cacher tous, sinon les deux
+            // groupes visibles se retrouvent collés sans aucune séparation).
+            let aDuVisibleAvant = false;
+            let separateursEnAttente = [];
+            document.querySelectorAll('.container > .grille-videos, .container > .grille-separateur').forEach((node) => {
+                if (node.classList.contains('grille-separateur')) {
+                    separateursEnAttente.push(node);
+                    return;
+                }
+                const visible = Array.from(node.querySelectorAll(':scope > [data-types]')).some((el) => !el.classList.contains('is-hidden'));
+                if (visible) {
+                    separateursEnAttente.forEach((sep, i) => sep.classList.toggle('is-hidden', !(i === 0 && aDuVisibleAvant)));
+                    separateursEnAttente = [];
+                    aDuVisibleAvant = true;
+                }
+            });
+            separateursEnAttente.forEach((sep) => sep.classList.add('is-hidden'));
         });
     });
+}
+
+/** Fine barre de séparation entre deux projets/groupes de la grille (voir
+ *  "separateur" dans le schéma des vidéos, en haut de assets/js/data.js). */
+function renderSeparateur() {
+    return el('div', { class: 'grille-separateur' });
+}
+
+/** Un seul média (image ou vidéo), sans badge ni wrapper — utilisé seul ou groupé. */
+function renderMedia(media, orientation) {
+    const tuile = el('div', { class: `video-placeholder video-placeholder--${orientation}` });
+    if (media.image) {
+        tuile.appendChild(el('img', {
+            attrs: {
+                src: media.image,
+                alt: '',
+                loading: 'lazy',
+                style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
+            },
+        }));
+    } else {
+        const embed = videoEmbedNode(media.url);
+        tuile.appendChild(embed || el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
+    }
+    return tuile;
 }
 
 /** Tuile vidéo (grille de la page projet), avec son texte de contexte si renseigné. */
 function renderVideoTile(video) {
     const orientation = video.orientation || 'landscape';
+
+    // Plusieurs médias réunis sous un seul badge/filtre : chaque média garde la
+    // même taille qu'une tuile seule (donc s'enchaîne/s'adapte comme des
+    // tuiles normales), mais un seul badge est affiché (sur le premier média).
+    if (video.medias && video.medias.length) {
+        const tuiles = video.medias.map((media, i) => {
+            const tuile = renderMedia(media, orientation);
+            if (i === 0) tuile.appendChild(el('span', { class: 'badge-type', text: video.types.join(', ') }));
+            return tuile;
+        });
+        const enfants = [...tuiles];
+        if (video.texte) enfants.push(el('p', { class: 'video-texte', text: video.texte }));
+        return el('div', {
+            class: `video-groupe video-groupe--${orientation}`,
+            attrs: { 'data-types': video.types.join('|') },
+        }, enfants);
+    }
+
     const tuile = el('div', { class: `video-placeholder video-placeholder--${orientation}` }, [
         el('span', { class: 'badge-type', text: video.types.join(', ') }),
     ]);
@@ -297,32 +377,40 @@ function renderVideoTile(video) {
 /** Tuile "plaquette/document" (PDF à consulter ou télécharger) : cadre carte de projet + layout image/texte. */
 function renderDocumentTile(doc) {
     const orientation = doc.orientation || 'landscape';
-    return el('div', {
-        class: `video-placeholder video-placeholder--${orientation} video-placeholder--doc`,
-        attrs: { 'data-types': doc.types.join('|') },
-    }, [
-        el('div', { class: 'card-projet' }, [
-            el('div', { class: 'card-projet__inner plaquette-tile' }, [
-                el('img', { class: 'plaquette-tile__cover', attrs: { src: doc.cover, alt: doc.titre, loading: 'lazy' } }),
-                el('div', { class: 'plaquette-tile__contenu' }, [
-                    el('h3', { class: 'plaquette-tile__titre', text: doc.titre }),
-                    doc.description ? el('p', { class: 'plaquette-tile__description', text: doc.description }) : null,
-                    el('div', { class: 'plaquette-tile__actions' }, [
-                        el('a', {
-                            class: 'plaquette-tile__lien',
-                            text: 'Lire',
-                            attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': `Lire "${doc.titre}" en ligne` },
-                        }),
-                        el('a', {
-                            class: 'plaquette-tile__lien',
-                            text: 'Télécharger',
-                            attrs: { href: doc.pdf, download: '', 'aria-label': `Télécharger "${doc.titre}"` },
-                        }),
-                    ]),
-                ]),
-            ]),
+
+    const tuile = el('div', { class: `video-placeholder video-placeholder--${orientation} video-placeholder--doc` }, [
+        el('span', { class: 'badge-type', text: doc.types.join(', ') }),
+        el('img', {
+            attrs: {
+                src: doc.cover,
+                alt: doc.titre,
+                loading: 'lazy',
+                style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
+            },
+        }),
+    ]);
+
+    const texte = el('div', { class: 'plaquette-texte' }, [
+        el('h3', { class: 'plaquette-tile__titre', text: doc.titre }),
+        doc.description ? el('p', { class: 'plaquette-tile__description', text: doc.description }) : null,
+        el('div', { class: 'plaquette-tile__actions' }, [
+            el('a', {
+                class: 'plaquette-tile__lien',
+                text: 'Lire',
+                attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': `Lire "${doc.titre}" en ligne` },
+            }),
+            el('a', {
+                class: 'plaquette-tile__lien',
+                text: 'Télécharger',
+                attrs: { href: doc.pdf, download: '', 'aria-label': `Télécharger "${doc.titre}"` },
+            }),
         ]),
     ]);
+
+    return el('div', {
+        class: `video-avec-texte video-avec-texte--${orientation}`,
+        attrs: { 'data-types': doc.types.join('|') },
+    }, [tuile, texte]);
 }
 
 /** Extrait l'ID d'un dossier Google Drive depuis un lien complet, ou renvoie
@@ -430,11 +518,29 @@ function renderDetail() {
         container.appendChild(filtre);
     }
 
-    const grille = el('div', { class: 'grille-videos' });
-    (projet.documents || []).forEach((doc) => grille.appendChild(renderDocumentTile(doc)));
-    projet.videos.forEach((video) => grille.appendChild(renderVideoTile(video)));
-    container.appendChild(grille);
-    chargerPhotosDrive(projet, grille);
+    // Un séparateur découpe la grille en plusieurs grilles indépendantes (voir
+    // "separateur" dans data.js), pour que son espacement ne dépende pas de la
+    // hauteur d'une ligne de grille.
+    const grilles = [el('div', { class: 'grille-videos' })];
+    (projet.documents || []).forEach((doc) => grilles[0].appendChild(renderDocumentTile(doc)));
+    container.appendChild(grilles[0]);
+
+    projet.videos.forEach((video) => {
+        if (video.separateur) {
+            container.appendChild(renderSeparateur());
+            grilles.push(el('div', { class: 'grille-videos' }));
+            container.appendChild(grilles[grilles.length - 1]);
+            return;
+        }
+        grilles[grilles.length - 1].appendChild(renderVideoTile(video));
+    });
+
+    grilles.forEach((g, i) => {
+        if (i > 0) g.style.marginTop = '0';
+        if (i < grilles.length - 1) g.style.marginBottom = '0';
+    });
+
+    chargerPhotosDrive(projet, grilles[grilles.length - 1]);
 
     if (projet.softwares && projet.softwares.length) {
         const badges = el('div', { class: 'badges' });
