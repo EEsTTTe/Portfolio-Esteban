@@ -28,8 +28,8 @@ function el(tag, options = {}, children = []) {
 const ICON_SPRITE = `<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-x" viewBox="0 0 24 24">
     <path d="M4.5 3.75H9L19.5 20.25H15L4.5 3.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <path d="M10.676 13.456L4.5 20.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M19.5 3.75L13.324 10.544" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10.676 13.456L4.5 20.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M19.5 3.75L13.324 10.544" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
   </symbol>
   <symbol id="icon-instagram" viewBox="0 0 24 24">
     <path d="M7.5 21C5.015 21 3 18.985 3 16.5V7.5C3 5.015 5.015 3 7.5 3H16.5C18.985 3 21 5.015 21 7.5V16.5C21 18.985 18.985 21 16.5 21H7.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -38,15 +38,15 @@ const ICON_SPRITE = `<svg style="display:none" xmlns="http://www.w3.org/2000/svg
   </symbol>
   <symbol id="icon-linkedin" viewBox="0 0 24 24">
     <path d="M3.75 21C3.336 21 3 20.664 3 20.25V3.75C3 3.336 3.336 3 3.75 3H20.25C20.664 3 21 3.336 21 3.75V20.25C21 20.664 20.664 21 20.25 21H3.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <path d="M11.25 10.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M8.25 10.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M11.25 13.125C11.25 11.675 12.425 10.5 13.875 10.5C15.325 10.5 16.5 11.675 16.5 13.125V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.25 10.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M8.25 10.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M11.25 13.125C11.25 11.675 12.425 10.5 13.875 10.5C15.325 10.5 16.5 11.675 16.5 13.125V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     <path d="M7.125 7.875C7.125 7.254 7.629 6.75 8.25 6.75C8.871 6.75 9.375 7.254 9.375 7.875C9.375 8.496 8.871 9 8.25 9C7.629 9 7.125 8.496 7.125 7.875Z" fill="currentColor"/>
   </symbol>
   <symbol id="icon-download" viewBox="0 0 24 24">
-    <path d="M12 3.75V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M7.5 11.25L12 15.75L16.5 11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M4.5 16.5V18.75C4.5 19.578 5.172 20.25 6 20.25H18C18.828 20.25 19.5 19.578 19.5 18.75V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 3.75V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M7.5 11.25L12 15.75L16.5 11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M4.5 16.5V18.75C4.5 19.578 5.172 20.25 6 20.25H18C18.828 20.25 19.5 19.578 19.5 18.75V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
   </symbol>
 </svg>`;
 
@@ -480,7 +480,7 @@ function renderDetail() {
     const projet = PROJECTS.find((p) => p.slug === slug);
 
     if (!projet) {
-        document.title = 'Projet introuvable — Esteban Santa';
+        document.title = 'Projet introuvable';
         root.appendChild(el('div', { class: 'container', attrs: { style: 'padding:160px 0;text-align:center;color:#fff;' } }, [
             el('h1', { text: 'Projet introuvable' }),
             el('p', { attrs: { style: 'margin:20px 0' } }, [
@@ -490,7 +490,7 @@ function renderDetail() {
         return;
     }
 
-    document.title = `${projet.titre} — Esteban Santa`;
+    document.title = projet.titre;
 
     const descriptionDiv = el('div', { class: 'description' }, [el('h1', { text: projet.titre })]);
     projet.description.forEach((paragraphe) => descriptionDiv.appendChild(el('p', { text: paragraphe })));
