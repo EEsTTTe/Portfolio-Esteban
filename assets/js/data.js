@@ -95,7 +95,6 @@ const PROJECTS = [
             { url: 'https://www.dropbox.com/scl/fi/oekc2xd9fr5v5edzgwlh9/Superstike_avis.mp4?rlkey=u0z63em9fvaut2wlfya2xnxr7&st=kqso4g3v&dl=0', types: ['Publicité', 'Short content'], orientation: 'portrait'},
             { url: 'https://www.dropbox.com/scl/fi/d4mfe9vhnq8qgq7moyuc3/Alphabet-of-R6-players.mp4?rlkey=hoi4ynr25y42ttn09dl05idy3&st=y9420156&dl=0', types: ['Short content'], orientation: 'portrait'},
             { url: 'https://www.dropbox.com/scl/fi/6jgq58ktrq62cnfd2v453/Edushort_R6.mp4?rlkey=tzscbfwdod8ghlziixpaajw71&st=9vr1cwcm&dl=0', types: ['Short content', 'Motion design'], orientation: 'portrait'},
-            { url:'https://www.dropbox.com/scl/fi/3prol6em5opbi0dppkjla/GuesstheItem.mp4?rlkey=peyn2sj3jtmt0576fymiv3q2f&st=054dsnxc&dl=0', types: ['Short content'], orientation: 'portrait'},
             { url:'https://www.dropbox.com/scl/fi/ngdpndk5hsswixtip6lcb/GuessTheRank_2.mp4?rlkey=g6geld6leqhfl9ild2vevlek3&st=srphkpwq&dl=0', types: ['Short content'], orientation: 'portrait'},
             { url:'https://www.dropbox.com/scl/fi/5u24hew57wfzzo8qit2ej/ITW_Lyloun.mp4?rlkey=rpk7tyubrgjrza3x5xho7fb4v&st=fhi1ztja&dl=0', types: ['Interview'], orientation: 'portrait'},
             { url:'https://www.dropbox.com/scl/fi/ryswzk1jikxadjwzdm9qo/Herofest.mp4?rlkey=qp0l2lfkj50ood2016e3blgok&st=ji1kcjgs&dl=0', types: ['After movie'], orientation: 'portrait'},
