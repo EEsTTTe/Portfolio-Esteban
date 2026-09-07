@@ -83,7 +83,8 @@ const PROJECTS = [
             { url: 'https://www.youtube.com/watch?v=zZWcePrhv08&t', types: ['Vidéo YT', 'Motion design'], orientation: 'landscape' },
             { url: 'https://www.youtube.com/watch?v=e9JFyUHmd2I&t=98s&pp=ygUSemFib3V0aW5lIHRlYW0gYmRz', types: ['Interview'], orientation: 'landscape' },
             { url: 'https://www.youtube.com/watch?v=T2XIM2BEO1g', types: ['Vidéo YT', 'Motion design'], orientation: 'landscape' },
-            { url: 'https://www.dropbox.com/scl/fi/f9xpq1bngysdivxtbm808/FER-finals.mp4?rlkey=3dfh2lsonz2z6fmi3hrfa2y8e&st=ux7u8dji&dl=0', types: ['Motion design'], orientation: 'landscape'},
+            { url: 'https://www.dropbox.com/scl/fi/f9xpq1bngysdivxtbm808/FER-finals.mp4?rlkey=3dfh2lsonz2z6fmi3hrfa2y8e&st=ux7u8dji&dl=0', types: ['Motion design'], orientation: 'landscape', texte: ''},
+            
 
             { url: 'https://www.dropbox.com/scl/fi/mwi4nkf8txr2k5kmupx6f/Edushort_R6_2.mp4?rlkey=mth6uus2ry2gh3aab6c01twth&st=6f49q93j&dl=0', types: ['Short content', 'Motion design'], orientation: 'portrait' },
             { url: 'https://www.dropbox.com/scl/fi/y0tm6ng2bk0vq19qo3c6f/LeagueTricks_2.mp4?rlkey=bqwooh1r857pqolfcyopppsc9&st=zsvxmix9&dl=0', types: ['Short content'], orientation: 'portrait' },
