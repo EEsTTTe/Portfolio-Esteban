@@ -247,11 +247,43 @@ a.card-projet:hover .card-projet__image { transform: scale(1.08); }
 .site-nav__liens a span { display: inline-block; transition: transform .15s ease; }
 .site-nav__liens a:hover span { transform: scale(1.04); }
 
+/* Bouton de changement de langue FR / EN (dans le bandeau de navigation).
+   Il affiche la langue vers laquelle on bascule, pas la langue courante. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  padding: 6px 12px;
+  border: 2px solid var(--blanc);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--blanc);
+  font-family: var(--font-titre);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, transform .15s ease;
+}
+.lang-switch:hover {
+  background: var(--blanc);
+  color: var(--noir);
+  transform: translateY(-1px);
+}
+.lang-switch:focus-visible {
+  outline: 2px solid var(--blanc-pur);
+  outline-offset: 2px;
+}
+.lang-switch span { display: inline-block; transition: transform .15s ease; }
+.lang-switch:hover span { transform: scale(1.04); }
+
 @media (max-width: 560px) {
   .site-nav__bar { padding: 10px 18px; gap: 12px; }
   .site-nav__logo img { height: 32px; }
   .site-nav__liens { gap: 18px; }
   .site-nav__liens a { font-size: 14px; }
+  .lang-switch { min-width: 38px; padding: 5px 8px; font-size: 12px; border-width: 1.5px; }
 }
 
 /* ---------- Header / hero ---------- */

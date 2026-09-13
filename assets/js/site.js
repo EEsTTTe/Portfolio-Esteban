@@ -1,8 +1,13 @@
 /**
  * Site 100% statique (HTML/CSS/JS) — aucune dépendance serveur.
- * Toutes les pages incluent data.js puis ce fichier.
+ * Toutes les pages incluent i18n.js, data.js puis ce fichier.
  * Chaque fonction de rendu vérifie la présence de son conteneur
  * et ne fait rien si la page courante ne le contient pas.
+ *
+ * Bilingue : les textes fixes passent par t('cle') et les textes des
+ * projets par tr(valeur) — voir assets/js/i18n.js. Chaque fonction de
+ * rendu VIDE son conteneur avant de le remplir, pour pouvoir être
+ * rejouée telle quelle quand on clique sur le bouton FR/EN.
  */
 
 /** Petit utilitaire de création de DOM (évite innerHTML pour le contenu texte). */
@@ -84,16 +89,17 @@ function initCopyYear() {
 
 /* ---------- Cards projet (réutilisées accueil + listing) ---------- */
 function renderProjectCard(projet) {
-    const categories = projet.categories.join(', ').toUpperCase();
+    const titre = tr(projet.titre);
+    const categories = projet.categories.map(trTerme).join(', ').toUpperCase();
     const classeImage = 'card-projet__image' + (projet.imageFit === 'contain' ? ' card-projet__image--contain' : '');
 
     const inner = el('div', { class: 'card-projet__inner' }, [
-        el('img', { class: classeImage, attrs: { src: projet.image, alt: projet.titre, loading: 'lazy' } }),
+        el('img', { class: classeImage, attrs: { src: projet.image, alt: titre, loading: 'lazy' } }),
     ]);
 
     return el('a', { class: 'card-projet', attrs: { href: `projet.html?slug=${encodeURIComponent(projet.slug)}` } }, [
         inner,
-        el('span', { class: 'card-projet__titre', text: projet.titre.toUpperCase() }),
+        el('span', { class: 'card-projet__titre', text: titre.toUpperCase() }),
         el('span', { class: 'card-projet__contenu', text: categories }),
     ]);
 }
@@ -101,16 +107,18 @@ function renderProjectCard(projet) {
 function renderHome() {
     const grille = document.getElementById('home-projects');
     if (grille) {
+        grille.innerHTML = '';
         PROJECTS.slice(0, 4).forEach((projet) => grille.appendChild(renderProjectCard(projet)));
     }
 
     const timeline = document.getElementById('timeline');
     if (timeline) {
+        timeline.innerHTML = '';
         EXPERIENCES.forEach((exp) => {
             timeline.appendChild(el('div', { class: 'timeline-item' }, [
-                colonneLignes(exp.role),
-                colonneLignes(exp.lieu),
-                colonneLignes([exp.debut, exp.fin], 'dates'),
+                colonneLignes(tr(exp.role)),
+                colonneLignes(tr(exp.lieu)),
+                colonneLignes([tr(exp.debut), tr(exp.fin)], 'dates'),
             ]));
         });
     }
@@ -124,27 +132,26 @@ function colonneLignes(lignes, classe) {
 function renderListing() {
     const grille = document.getElementById('all-projects');
     if (!grille) return;
+    grille.innerHTML = '';
     PROJECTS.forEach((projet) => grille.appendChild(renderProjectCard(projet)));
 }
 
 /* ---------- Page détail projet ---------- */
+/** Types d'un projet, traduits dans la langue courante (sans doublon).
+ *  Les badges, les attributs data-types et les boutons de filtre passent tous
+ *  par trTerme : les valeurs comparées restent donc cohérentes entre elles. */
 function getVideoTypes(projet) {
     const types = [];
-    (projet.documents || []).forEach((doc) => {
-        doc.types.forEach((type) => {
-            if (!types.includes(type)) types.push(type);
-        });
-    });
+    const ajouter = (type) => {
+        const traduit = trTerme(type);
+        if (!types.includes(traduit)) types.push(traduit);
+    };
+    (projet.documents || []).forEach((doc) => doc.types.forEach(ajouter));
     projet.videos.forEach((video) => {
         if (video.separateur) return;
-        video.types.forEach((type) => {
-            if (!types.includes(type)) types.push(type);
-        });
+        video.types.forEach(ajouter);
     });
-    if (projet.driveFolder) {
-        const type = projet.driveType || 'Photographie';
-        if (!types.includes(type)) types.push(type);
-    }
+    if (projet.driveFolder) ajouter(projet.driveType || 'Photographie');
     return types;
 }
 
@@ -223,7 +230,7 @@ function videoEmbedNode(url) {
     // car ces plateformes bloquent l'intégration en iframe sans leur script JS officiel.
     if (/(?:^|\/)(?:x|twitter)\.com\//.test(propre)) {
         return el('a', { class: 'video-placeholder__lien', attrs: { href: propre, target: '_blank', rel: 'noopener' } }, [
-            el('span', { text: 'Voir la vidéo sur X ↗' }),
+            el('span', { text: t('projet.voirSurX') }),
         ]);
     }
 
@@ -246,7 +253,7 @@ function videoEmbedVimeoOembed(url) {
         .catch(() => {
             conteneur.innerHTML = '';
             conteneur.appendChild(el('a', { class: 'video-placeholder__lien', attrs: { href: url, target: '_blank', rel: 'noopener' } }, [
-                el('span', { text: 'Voir la vidéo sur Vimeo ↗' }),
+                el('span', { text: t('projet.voirSurVimeo') }),
             ]));
         });
 
@@ -315,7 +322,7 @@ function renderMedia(media, orientation) {
         }));
     } else {
         const embed = videoEmbedNode(media.url);
-        tuile.appendChild(embed || el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
+        tuile.appendChild(embed || el('span', { html: t('projet.videoManquante') }));
     }
     return tuile;
 }
@@ -323,6 +330,8 @@ function renderMedia(media, orientation) {
 /** Tuile vidéo (grille de la page projet), avec son texte de contexte si renseigné. */
 function renderVideoTile(video) {
     const orientation = video.orientation || 'landscape';
+    const types = video.types.map(trTerme);
+    const texte = tr(video.texte);
 
     // Plusieurs médias réunis sous un seul badge/filtre : chaque média garde la
     // même taille qu'une tuile seule (donc s'enchaîne/s'adapte comme des
@@ -330,26 +339,26 @@ function renderVideoTile(video) {
     if (video.medias && video.medias.length) {
         const tuiles = video.medias.map((media, i) => {
             const tuile = renderMedia(media, orientation);
-            if (i === 0) tuile.appendChild(el('span', { class: 'badge-type', text: video.types.join(', ') }));
+            if (i === 0) tuile.appendChild(el('span', { class: 'badge-type', text: types.join(', ') }));
             return tuile;
         });
         const enfants = [...tuiles];
-        if (video.texte) enfants.push(el('p', { class: 'video-texte', text: video.texte }));
+        if (texte) enfants.push(el('p', { class: 'video-texte', text: texte }));
         return el('div', {
             class: `video-groupe video-groupe--${orientation}`,
-            attrs: { 'data-types': video.types.join('|') },
+            attrs: { 'data-types': types.join('|') },
         }, enfants);
     }
 
     const tuile = el('div', { class: `video-placeholder video-placeholder--${orientation}` }, [
-        el('span', { class: 'badge-type', text: video.types.join(', ') }),
+        el('span', { class: 'badge-type', text: types.join(', ') }),
     ]);
 
     if (video.image) {
         tuile.appendChild(el('img', {
             attrs: {
                 src: video.image,
-                alt: video.types.join(', '),
+                alt: types.join(', '),
                 loading: 'lazy',
                 style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
             },
@@ -359,31 +368,34 @@ function renderVideoTile(video) {
         if (embed) {
             tuile.appendChild(embed);
         } else {
-            tuile.appendChild(el('span', { html: "Ajoute l'URL de ta vidéo<br>dans assets/js/data.js" }));
+            tuile.appendChild(el('span', { html: t('projet.videoManquante') }));
         }
     }
 
-    if (!video.texte) {
-        tuile.setAttribute('data-types', video.types.join('|'));
+    if (!texte) {
+        tuile.setAttribute('data-types', types.join('|'));
         return tuile;
     }
 
     return el('div', {
         class: `video-avec-texte video-avec-texte--${orientation}`,
-        attrs: { 'data-types': video.types.join('|') },
-    }, [tuile, el('p', { class: 'video-texte', text: video.texte })]);
+        attrs: { 'data-types': types.join('|') },
+    }, [tuile, el('p', { class: 'video-texte', text: texte })]);
 }
 
 /** Tuile "plaquette/document" (PDF à consulter ou télécharger) : cadre carte de projet + layout image/texte. */
 function renderDocumentTile(doc) {
     const orientation = doc.orientation || 'landscape';
+    const types = doc.types.map(trTerme);
+    const titre = tr(doc.titre);
+    const description = tr(doc.description);
 
     const tuile = el('div', { class: `video-placeholder video-placeholder--${orientation} video-placeholder--doc` }, [
-        el('span', { class: 'badge-type', text: doc.types.join(', ') }),
+        el('span', { class: 'badge-type', text: types.join(', ') }),
         el('img', {
             attrs: {
                 src: doc.cover,
-                alt: doc.titre,
+                alt: titre,
                 loading: 'lazy',
                 style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;',
             },
@@ -391,25 +403,25 @@ function renderDocumentTile(doc) {
     ]);
 
     const texte = el('div', { class: 'plaquette-texte' }, [
-        el('h3', { class: 'plaquette-tile__titre', text: doc.titre }),
-        doc.description ? el('p', { class: 'plaquette-tile__description', text: doc.description }) : null,
+        el('h3', { class: 'plaquette-tile__titre', text: titre }),
+        description ? el('p', { class: 'plaquette-tile__description', text: description }) : null,
         el('div', { class: 'plaquette-tile__actions' }, [
             el('a', {
                 class: 'plaquette-tile__lien',
-                text: 'Lire',
-                attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': `Lire "${doc.titre}" en ligne` },
+                text: t('projet.docLire'),
+                attrs: { href: doc.pdf, target: '_blank', rel: 'noopener', 'aria-label': t('projet.docLireAria', { titre }) },
             }),
             el('a', {
                 class: 'plaquette-tile__lien',
-                text: 'Télécharger',
-                attrs: { href: doc.pdf, download: '', 'aria-label': `Télécharger "${doc.titre}"` },
+                text: t('projet.docTelecharger'),
+                attrs: { href: doc.pdf, download: '', 'aria-label': t('projet.docTelechargerAria', { titre }) },
             }),
         ]),
     ]);
 
     return el('div', {
         class: `video-avec-texte video-avec-texte--${orientation}`,
-        attrs: { 'data-types': doc.types.join('|') },
+        attrs: { 'data-types': types.join('|') },
     }, [tuile, texte]);
 }
 
@@ -445,12 +457,12 @@ function renderPhotoTile(fichier, type) {
  *  SITE.googleDriveApiKey et "driveFolder" sur un projet dans data.js). */
 async function chargerPhotosDrive(projet, grille) {
     if (!projet.driveFolder) return;
-    const type = projet.driveType || 'Photographie';
+    const type = trTerme(projet.driveType || 'Photographie');
 
     if (!SITE.googleDriveApiKey || SITE.googleDriveApiKey === 'YOUR_GOOGLE_DRIVE_API_KEY') {
         grille.appendChild(el('div', { class: 'video-placeholder video-placeholder--landscape', attrs: { 'data-types': type } }, [
             el('span', { class: 'badge-type', text: type }),
-            el('span', { html: "Configure ta clé Google Drive<br>dans assets/js/data.js (SITE.googleDriveApiKey)" }),
+            el('span', { html: t('projet.driveCle') }),
         ]));
         return;
     }
@@ -467,7 +479,7 @@ async function chargerPhotosDrive(projet, grille) {
     } catch (erreur) {
         grille.appendChild(el('div', { class: 'video-placeholder video-placeholder--landscape', attrs: { 'data-types': type } }, [
             el('span', { class: 'badge-type', text: type }),
-            el('span', { text: "Impossible de charger les photos Drive : vérifie la clé API et le partage du dossier." }),
+            el('span', { text: t('projet.driveErreur') }),
         ]));
     }
 }
@@ -476,29 +488,32 @@ function renderDetail() {
     const root = document.getElementById('projet-app');
     if (!root) return;
 
+    root.innerHTML = '';
+
     const slug = new URLSearchParams(window.location.search).get('slug');
     const projet = PROJECTS.find((p) => p.slug === slug);
 
     if (!projet) {
-        document.title = 'Projet introuvable';
+        document.title = t('projet.introuvable');
         root.appendChild(el('div', { class: 'container', attrs: { style: 'padding:160px 0;text-align:center;color:#fff;' } }, [
-            el('h1', { text: 'Projet introuvable' }),
+            el('h1', { text: t('projet.introuvable') }),
             el('p', { attrs: { style: 'margin:20px 0' } }, [
-                el('a', { class: 'btn', attrs: { href: 'projets.html' } }, [el('span', { text: 'Retour aux projets' })]),
+                el('a', { class: 'btn', attrs: { href: 'projets.html' } }, [el('span', { text: t('projet.retour') })]),
             ]),
         ]));
         return;
     }
 
-    document.title = projet.titre;
+    const titre = tr(projet.titre);
+    document.title = titre;
 
-    const descriptionDiv = el('div', { class: 'description' }, [el('h1', { text: projet.titre })]);
-    projet.description.forEach((paragraphe) => descriptionDiv.appendChild(el('p', { text: paragraphe })));
+    const descriptionDiv = el('div', { class: 'description' }, [el('h1', { text: titre })]);
+    tr(projet.description).forEach((paragraphe) => descriptionDiv.appendChild(el('p', { text: paragraphe })));
 
     const classeImage = 'card-projet__image' + (projet.imageFit === 'contain' ? ' card-projet__image--contain' : '');
     const card = el('div', { class: 'card-projet' }, [
         el('div', { class: 'card-projet__inner' }, [
-            el('img', { class: classeImage, attrs: { src: projet.image, alt: projet.titre } }),
+            el('img', { class: classeImage, attrs: { src: projet.image, alt: titre } }),
         ]),
     ]);
 
@@ -510,7 +525,7 @@ function renderDetail() {
     const types = getVideoTypes(projet);
     if (types.length > 1) {
         const filtre = el('div', { class: 'filtre' }, [
-            el('button', { class: 'filtre-btn active', attrs: { type: 'button', 'data-filter': 'tout' } }, [el('span', { text: 'Tout' })]),
+            el('button', { class: 'filtre-btn active', attrs: { type: 'button', 'data-filter': 'tout' } }, [el('span', { text: t('projet.filtreTout') })]),
         ]);
         types.forEach((type) => {
             filtre.appendChild(el('button', { class: 'filtre-btn', attrs: { type: 'button', 'data-filter': type } }, [el('span', { text: type })]));
@@ -549,7 +564,7 @@ function renderDetail() {
             if (!icone) return;
             badges.appendChild(el('img', { class: 'software-icon', attrs: { src: icone.src, alt: icone.nom } }));
         });
-        container.appendChild(el('div', { class: 'logiciels' }, [badges, el('h2', { text: 'Logiciels utilisés' })]));
+        container.appendChild(el('div', { class: 'logiciels' }, [badges, el('h2', { text: t('projet.logiciels') })]));
     }
 
     initFiltre();
@@ -588,7 +603,7 @@ function initContactForm() {
         }
 
         if (!configure) {
-            afficherMessageFormulaire('erreur', "Le formulaire n'est pas encore configuré : crée un compte gratuit sur formspree.io et renseigne ton identifiant de formulaire dans assets/js/data.js (SITE.formspreeId).");
+            afficherMessageFormulaire('erreur', t('form.nonConfigure'));
             return;
         }
 
@@ -603,25 +618,45 @@ function initContactForm() {
             });
 
             if (reponse.ok) {
-                afficherMessageFormulaire('succes', 'Merci ! Ton message a bien été envoyé, je te réponds au plus vite.');
+                afficherMessageFormulaire('succes', t('form.succes'));
                 form.reset();
             } else {
-                afficherMessageFormulaire('erreur', `Le message n'a pas pu être envoyé. Réessaie plus tard ou écris-moi directement à ${SITE.email}.`);
+                afficherMessageFormulaire('erreur', t('form.erreur', { email: SITE.email }));
             }
         } catch (erreur) {
-            afficherMessageFormulaire('erreur', `Le message n'a pas pu être envoyé (connexion). Réessaie plus tard ou écris-moi directement à ${SITE.email}.`);
+            afficherMessageFormulaire('erreur', t('form.erreurReseau', { email: SITE.email }));
         } finally {
             bouton.disabled = false;
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initIconSprite();
-    initSocialLinks();
-    initCopyYear();
+/* ---------- Rendu de tout le contenu généré en JS ---------- */
+/** Rejoué à l'identique à chaque changement de langue (chaque fonction vide
+ *  son propre conteneur avant de le remplir). */
+function renderContenu() {
     renderHome();
     renderListing();
     renderDetail();
+    initSocialLinks();
+    // En dernier : les cards de projet viennent d'être recréées, et leurs liens
+    // doivent eux aussi transporter la langue courante.
+    propagerLangueSurLiens();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initIconSprite();
+    appliquerTraductionsStatiques();
+    initLangSwitch();
+    initCopyYear();
+    renderContenu();
     initContactForm();
+
+    // Clic sur le bouton FR/EN : les textes fixes sont déjà retraduits par
+    // setLang, il ne reste qu'à regénérer le contenu construit en JS.
+    onLangChange(() => {
+        const slot = document.getElementById('form-message-slot');
+        if (slot) slot.innerHTML = '';
+        renderContenu();
+    });
 });
