@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title data-i18n="title.contact">Contact</title>
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Google tag (gtag.js) -->
@@ -26,16 +26,19 @@
                     <img src="assets/img/logo.png" alt="ES Prod">
                 </a>
                 <nav class="site-nav__liens">
-                    <a href="projets.html"><span>Projets</span></a>
-                    <a href="contact.html"><span>Contact</span></a>
+                    <a href="projets.html"><span data-i18n="nav.projets">Projets</span></a>
+                    <a href="contact.html"><span data-i18n="nav.contact">Contact</span></a>
+                    <button class="lang-switch" type="button" data-i18n-aria="nav.langueAria">
+                        <span data-i18n="nav.langue">EN</span>
+                    </button>
                 </nav>
             </div>
         </div>
     </header>
 
     <section class="contact-titre container">
-        <span class="tag">Discutons</span>
-        <h1>Travaillons<br>Ensemble<br><span class="accent">dès maintenant</span></h1>
+        <span class="tag" data-i18n="contact.tag">Discutons</span>
+        <h1 data-i18n-html="contact.titre">Travaillons<br>Ensemble<br><span class="accent">dès maintenant</span></h1>
     </section>
 
     <section class="container contact-grille">
@@ -43,14 +46,14 @@
             <div class="contact-carte contact-carte--info">
                 <div class="contact-carte__inner">
                     <a class="valeur" data-social="email" data-social-text="email"></a>
-                    <p class="label">Adresse mail</p>
+                    <p class="label" data-i18n="contact.labelMail">Adresse mail</p>
                 </div>
             </div>
 
             <div class="contact-carte contact-carte--info">
                 <div class="contact-carte__inner">
                     <a class="valeur" data-social="phone" data-social-text="phone"></a>
-                    <p class="label">Téléphone</p>
+                    <p class="label" data-i18n="contact.labelTel">Téléphone</p>
                 </div>
             </div>
 
@@ -75,19 +78,19 @@
                 <form id="contact-form" method="post" novalidate>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nom">Nom</label>
-                            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                            <label for="nom" data-i18n="form.nom">Nom</label>
+                            <input type="text" id="nom" name="nom" placeholder="Votre nom" data-i18n-placeholder="form.nomPlaceholder" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Mail</label>
-                            <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
+                            <label for="email" data-i18n="form.mail">Mail</label>
+                            <input type="email" id="email" name="email" placeholder="Votre adresse mail" data-i18n-placeholder="form.mailPlaceholder" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" placeholder="Votre message" required></textarea>
+                        <label for="message" data-i18n="form.message">Message</label>
+                        <textarea id="message" name="message" placeholder="Votre message" data-i18n-placeholder="form.messagePlaceholder" required></textarea>
                     </div>
-                    <button type="submit" class="btn"><span>Envoyer</span></button>
+                    <button type="submit" class="btn"><span data-i18n="form.envoyer">Envoyer</span></button>
                 </form>
             </div>
         </div>
@@ -114,14 +117,15 @@
                 </div>
             </div>
             <nav>
-                <a href="projets.html"><span>Projets</span></a>
-                <a href="index.html#profil"><span>Profil</span></a>
-                <a href="contact.html"><span>Contact</span></a>
+                <a href="projets.html"><span data-i18n="nav.projets">Projets</span></a>
+                <a href="index.html#profil"><span data-i18n="nav.profil">Profil</span></a>
+                <a href="contact.html"><span data-i18n="nav.contact">Contact</span></a>
             </nav>
             <p class="copy">&copy; <span id="copy-year"></span> ES</p>
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/data.js"></script>
     <script src="assets/js/site.js"></script>
 </body>

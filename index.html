@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esteban Santa</title>
+    <title data-i18n="title.accueil">Esteban Santa</title>
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Google tag (gtag.js) -->
@@ -26,20 +26,23 @@
                     <img src="assets/img/logo.png" alt="ES Prod">
                 </a>
                 <nav class="site-nav__liens">
-                    <a href="projets.html"><span>Projets</span></a>
-                    <a href="contact.html"><span>Contact</span></a>
+                    <a href="projets.html"><span data-i18n="nav.projets">Projets</span></a>
+                    <a href="contact.html"><span data-i18n="nav.contact">Contact</span></a>
+                    <button class="lang-switch" type="button" data-i18n-aria="nav.langueAria">
+                        <span data-i18n="nav.langue">EN</span>
+                    </button>
                 </nav>
             </div>
         </div>
     </header>
 
     <header class="hero container">
-        <span class="tag">Monteur vidéo</span>
+        <span class="tag" data-i18n="accueil.tag">Monteur vidéo</span>
         <h1>Esteban Santa</h1>
-        <p>Vidéaste polyvalent, curieux et motivé d'apprendre de nouvelles choses pour aller encore plus loin !</p>
+        <p data-i18n="accueil.accroche">Vidéaste polyvalent, curieux et motivé d'apprendre de nouvelles choses pour aller encore plus loin !</p>
         <div class="actions">
-            <a class="btn" href="projets.html"><span>Tous mes projets</span></a>
-            <a class="btn" href="contact.html"><span>Contactez moi !</span></a>
+            <a class="btn" href="projets.html"><span data-i18n="btn.tousProjets">Tous mes projets</span></a>
+            <a class="btn" href="contact.html"><span data-i18n="btn.contact">Contactez moi !</span></a>
         </div>
     </header>
 
@@ -47,8 +50,8 @@
         <div class="profil container">
             <div class="moi">
                 <img class="portrait" src="assets/img/esteban.jpg" alt="Esteban Santa">
-                <h2>Salut, je suis Esteban</h2>
-                <p class="sous-titre">Vidéaste polyvalent</p>
+                <h2 data-i18n="profil.salut">Salut, je suis Esteban</h2>
+                <p class="sous-titre" data-i18n="profil.sousTitre">Vidéaste polyvalent</p>
                 <div class="reseaux">
                     <a class="icon-social" data-social="x" target="_blank" rel="noopener" aria-label="X (Twitter)">
                         <svg><use href="#icon-x"></use></svg>
@@ -64,16 +67,16 @@
                 </div>
                 <span class="divider-h"></span>
                 <div class="actions">
-                    <a class="btn" href="https://featpaper.com/n/Z3EhEJes?email=anonymous_pdf" target="_blank"><span>Mon CV</span></a>
-                    <a class="btn" href="contact.html"><span>Contactez moi !</span></a>
+                    <a class="btn" href="https://featpaper.com/u/rAiZXkep/l6" data-i18n-href="lien.cv" target="_blank" rel="noopener"><span data-i18n="btn.cv">Mon CV</span></a>
+                    <a class="btn" href="contact.html"><span data-i18n="btn.contact">Contactez moi !</span></a>
                 </div>
             </div>
 
             <div class="presentation">
-                <p>Depuis mes 12 ans, je regarde presque tous les jours des contenus sur internet et les réseaux sociaux. J'ai toujours rêvé de, moi aussi, laisser ma trace quelque part dans ce vaste monde.</p>
-                <p>Ce qui me plaît le plus ? Le montage ! J'ai, à plusieurs reprises essayé, étant enfant, d'apprendre sans vraiment y parvenir. Jusqu'à ce que je me plonge pleinement dedans et que j'en fasse aujourd'hui ma raison de sortir de mon lit.</p>
-                <p>Grâce à mon diplôme de BUT Métier du Multimédia et de l'Internet, j'ai pu approfondir mes compétences dans le large domaine du multimédia en général et travailler sur des projets des plus variés.</p>
-                <p>À côté de ça, je me suis passionné pour le sport électronique, le e-sport, c'est ce qui m'a amené à travailler chez Shifters, qui a grandement forgé mes compétences actuelles.</p>
+                <p data-i18n="profil.p1">Depuis mes 12 ans, je regarde presque tous les jours des contenus sur internet et les réseaux sociaux. J'ai toujours rêvé de, moi aussi, laisser ma trace quelque part dans ce vaste monde.</p>
+                <p data-i18n="profil.p2">Ce qui me plaît le plus ? Le montage ! J'ai, à plusieurs reprises essayé, étant enfant, d'apprendre sans vraiment y parvenir. Jusqu'à ce que je me plonge pleinement dedans et que j'en fasse aujourd'hui ma raison de sortir de mon lit.</p>
+                <p data-i18n="profil.p3">Grâce à mon diplôme de BUT Métier du Multimédia et de l'Internet, j'ai pu approfondir mes compétences dans le large domaine du multimédia en général et travailler sur des projets des plus variés.</p>
+                <p data-i18n="profil.p4">À côté de ça, je me suis passionné pour le sport électronique, le e-sport, c'est ce qui m'a amené à travailler chez Shifters, qui a grandement forgé mes compétences actuelles.</p>
 
                 <div class="timeline" id="timeline"></div>
             </div>
@@ -82,17 +85,17 @@
 
     <section class="section-projets container">
         <div class="entete">
-            <span class="tag">Derniers projets</span>
+            <span class="tag" data-i18n="accueil.derniersProjets">Derniers projets</span>
             <div class="actions">
-                <a class="btn" href="projets.html"><span>Tous mes projets</span></a>
-                <a class="btn" href="contact.html"><span>Contactez moi !</span></a>
+                <a class="btn" href="projets.html"><span data-i18n="btn.tousProjets">Tous mes projets</span></a>
+                <a class="btn" href="contact.html"><span data-i18n="btn.contact">Contactez moi !</span></a>
             </div>
         </div>
 
         <div class="grille-projets" id="home-projects"></div>
 
         <div class="voir-plus">
-            <a class="btn" href="projets.html"><span>Voir plus</span></a>
+            <a class="btn" href="projets.html"><span data-i18n="btn.voirPlus">Voir plus</span></a>
         </div>
     </section>
 
@@ -117,14 +120,15 @@
                 </div>
             </div>
             <nav>
-                <a href="projets.html"><span>Projets</span></a>
-                <a href="index.html#profil"><span>Profil</span></a>
-                <a href="contact.html"><span>Contact</span></a>
+                <a href="projets.html"><span data-i18n="nav.projets">Projets</span></a>
+                <a href="index.html#profil"><span data-i18n="nav.profil">Profil</span></a>
+                <a href="contact.html"><span data-i18n="nav.contact">Contact</span></a>
             </nav>
             <p class="copy">&copy; <span id="copy-year"></span> ES</p>
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/data.js"></script>
     <script src="assets/js/site.js"></script>
 </body>

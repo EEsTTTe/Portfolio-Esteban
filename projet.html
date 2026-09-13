@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet — Esteban Santa</title>
+    <title data-i18n="title.projet">Projet — Esteban Santa</title>
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Google tag (gtag.js) -->
@@ -26,8 +26,11 @@
                     <img src="assets/img/logo.png" alt="ES Prod">
                 </a>
                 <nav class="site-nav__liens">
-                    <a href="projets.html"><span>Projets</span></a>
-                    <a href="contact.html"><span>Contact</span></a>
+                    <a href="projets.html"><span data-i18n="nav.projets">Projets</span></a>
+                    <a href="contact.html"><span data-i18n="nav.contact">Contact</span></a>
+                    <button class="lang-switch" type="button" data-i18n-aria="nav.langueAria">
+                        <span data-i18n="nav.langue">EN</span>
+                    </button>
                 </nav>
             </div>
         </div>
@@ -56,14 +59,15 @@
                 </div>
             </div>
             <nav>
-                <a href="projets.html"><span>Projets</span></a>
-                <a href="index.html#profil"><span>Profil</span></a>
-                <a href="contact.html"><span>Contact</span></a>
+                <a href="projets.html"><span data-i18n="nav.projets">Projets</span></a>
+                <a href="index.html#profil"><span data-i18n="nav.profil">Profil</span></a>
+                <a href="contact.html"><span data-i18n="nav.contact">Contact</span></a>
             </nav>
             <p class="copy">&copy; <span id="copy-year"></span> ES</p>
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/data.js"></script>
     <script src="assets/js/site.js"></script>
 </body>
