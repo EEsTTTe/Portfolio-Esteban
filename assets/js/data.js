@@ -125,48 +125,6 @@ const PROJECTS = [
     },
 
     {
-        slug: 'le-scarabee',
-        titre: 'Le Scarabée',
-        categories: ['Graphisme', 'Montage vidéo', 'Captation'],
-        image: 'assets/img/projects/scarabee.jpg',
-        imageFit: 'contain',
-        description: {
-            fr: [
-                "Pendant mon stage de deuxième années de BUT MMI, j'ai travaillé dans la salle de spectacle de Chambéry-le-Haut, Le Scarabée.",
-                "Pendant ce stage, mon travail consistait à préparer les éléments de communication de la saison pour la salle. Plaquette de programmation, affiches mensuelles, kakemono, captation de spectacles, teaser vidéo etc…",
-            ],
-            en: [
-                "During my second-year internship of the BUT MMI degree, I worked at Le Scarabée, the theater of Chambéry-le-Haut.",
-                "My job there was to prepare the upcomming communication material for the whole season: programme brochure, monthly posters, roll-up banners, filming of the shows, video teasers and so on.",
-            ],
-        },
-        softwares: ['Pr', 'Id', 'Ps'],
-        documents: [
-            {
-                titre: { fr: 'Plaquette saison 2025-2026', en: 'Season 2025-2026 brochure' },
-                description: {
-                    fr: "La principale mission de mon stage aura été la réalisation de la plaquette de programmation de l'année. Une tâche qui aura pris la majeure partie de mon temps étant donné la  multitude d'informations à collecter.\n\nJ'ai imaginé la disposition et les différents éléments graphique à partir de la première de couveture (designé par le graphiste de la ville)",
-                    en: "The main mission of my internship was producing the season's programme brochure. It took up most of my time, given the sheer amount of information to gather.\n\nI designed the layout and the various graphic elements starting from the front cover (created by the city's graphic designer).",
-                },
-                cover: 'assets/img/documents/plaquette-scarabee.jpg',
-                pdf: 'assets/docs/plaquette-scarabee.pdf',
-                types: ['Graphisme'],
-                orientation: 'landscape',
-            },
-        ],
-        videos: [
-            { url: 'https://www.dropbox.com/scl/fi/uh2u15ex43hilhheg0wyy/Teaser-cin-v5_1.mp4?rlkey=n4pg8tq3gltx4yt0n9j7elpcb&st=2mmwd33k&dl=0', types: ['Montage'], orientation: 'landscape', texte: {
-                fr: "Voici le teaser de la salle de spectacle qui a été diffusé dans les cinémas locaux tout au long de l'année.",
-                en: "This is the theater's teaser, screened in local cinemas throughout the year.",
-            }},
-            { url: 'https://www.dropbox.com/scl/fi/t9f0tfcy7obnpjyukclre/Teaservf_1.mp4?rlkey=fl9q1lzlwrbzxr5yotcb4pth6&st=ymh3xzly&dl=0', types: ['Montage'], orientation: 'landscape', texte: {
-                fr: "À chambéry, il y a une semaine d'activités dédiée aux enfants: le festival du 5e éléphant. Voici donc le teaser vidéo pour les spectacles lors de cette semaine, destiné aux enfants.",
-                en: "In Chambéry, a whole week of activities is dedicated to children: the Festival of the 5th elephant. Here is the teaser for that week's shows, aimed for kids.",
-            }},
-        ],
-    },
-
-    {
         slug: 'projets-iut',
         titre: { fr: 'Projets IUT', en: 'University projects' },
         categories: ['DA', 'Vidéo','3D', 'Graphisme'],
@@ -294,7 +252,49 @@ const PROJECTS = [
 
         ],
     },
-
+    
+    {
+        slug: 'le-scarabee',
+        titre: 'Le Scarabée',
+        categories: ['Graphisme', 'Montage vidéo', 'Captation'],
+        image: 'assets/img/projects/scarabee.jpg',
+        imageFit: 'contain',
+        description: {
+            fr: [
+                "Pendant mon stage de deuxième années de BUT MMI, j'ai travaillé dans la salle de spectacle de Chambéry-le-Haut, Le Scarabée.",
+                "Pendant ce stage, mon travail consistait à préparer les éléments de communication de la saison pour la salle. Plaquette de programmation, affiches mensuelles, kakemono, captation de spectacles, teaser vidéo etc…",
+            ],
+            en: [
+                "During my second-year internship of the BUT MMI degree, I worked at Le Scarabée, the theater of Chambéry-le-Haut.",
+                "My job there was to prepare the upcomming communication material for the whole season: programme brochure, monthly posters, roll-up banners, filming of the shows, video teasers and so on.",
+            ],
+        },
+        softwares: ['Pr', 'Id', 'Ps'],
+        documents: [
+            {
+                titre: { fr: 'Plaquette saison 2025-2026', en: 'Season 2025-2026 brochure' },
+                description: {
+                    fr: "La principale mission de mon stage aura été la réalisation de la plaquette de programmation de l'année. Une tâche qui aura pris la majeure partie de mon temps étant donné la  multitude d'informations à collecter.\n\nJ'ai imaginé la disposition et les différents éléments graphique à partir de la première de couveture (designé par le graphiste de la ville)",
+                    en: "The main mission of my internship was producing the season's programme brochure. It took up most of my time, given the sheer amount of information to gather.\n\nI designed the layout and the various graphic elements starting from the front cover (created by the city's graphic designer).",
+                },
+                cover: 'assets/img/documents/plaquette-scarabee.jpg',
+                pdf: 'assets/docs/plaquette-scarabee.pdf',
+                types: ['Graphisme'],
+                orientation: 'landscape',
+            },
+        ],
+        videos: [
+            { url: 'https://www.dropbox.com/scl/fi/uh2u15ex43hilhheg0wyy/Teaser-cin-v5_1.mp4?rlkey=n4pg8tq3gltx4yt0n9j7elpcb&st=2mmwd33k&dl=0', types: ['Montage'], orientation: 'landscape', texte: {
+                fr: "Voici le teaser de la salle de spectacle qui a été diffusé dans les cinémas locaux tout au long de l'année.",
+                en: "This is the theater's teaser, screened in local cinemas throughout the year.",
+            }},
+            { url: 'https://www.dropbox.com/scl/fi/t9f0tfcy7obnpjyukclre/Teaservf_1.mp4?rlkey=fl9q1lzlwrbzxr5yotcb4pth6&st=ymh3xzly&dl=0', types: ['Montage'], orientation: 'landscape', texte: {
+                fr: "À chambéry, il y a une semaine d'activités dédiée aux enfants: le festival du 5e éléphant. Voici donc le teaser vidéo pour les spectacles lors de cette semaine, destiné aux enfants.",
+                en: "In Chambéry, a whole week of activities is dedicated to children: the Festival of the 5th elephant. Here is the teaser for that week's shows, aimed for kids.",
+            }},
+        ],
+    },
+    
     {
         slug: 'mariage',
         titre: { fr: 'Mariage', en: 'Wedding' },
